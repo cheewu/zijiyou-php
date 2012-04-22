@@ -108,8 +108,32 @@ h1,h2,h3,h4,h5,h6{ font-size:14px; font-weight:normal;}
 .tupian{ margin-top:10px; margin-bottom:10px;}
 
 /* ditu */
-.Layout{ width:860px; float:left; background:#FFFFFF; padding:20px 20px 20px 20px; margin-top:10px;}
-.ditu{ float:left;}
+#center{ width:860px; float:left; background:#FFFFFF; padding:10px 20px 20px 20px; margin-top:10px;}
+.ditu{ float:left; margin-top:10px;}
 .ditu_center{ width:860px; float:left;}
 .ditu_text{ width:860px; float:left; margin-top:10px;}
 .ditu_text span{margin-left:3px; margin-right:5px; margin-top:5px;  font-size:14px; padding-bottom:5px;}
+
+/* quyu */
+.hot{ width:220px; float:left; padding-bottom:15px;}
+.hot ol{ width:200px; float:left; padding-left:15px; margin-top:10px;}
+.hot ol dt{ width:60px; float:left; }
+.hot ol dd{ float:left; font-size:12px; line-height:60px; padding-left:10px;}
+.hot ol dd a{ color:#5392cb;}
+.offside h1 a{ color:#5392cb;}
+.travel h1{ width:640px; float:left;}
+.ditu_bt{ width:640px; float:left; margin-top:15px; font-size:14px; color:#5392cb;}
+
+
+/* wenzhang */
+.writings{ width:640px; float:left; margin-top:10px;}
+.writings_text{ margin-top:5px; float:left; color:#B3BBC3;}
+.writings_text a{ color:#5392cb;}
+.writings p{ width:640px; float:left; color:#666666; margin-top:15px; line-height:20px;}
+.writings p a { color:#5392cb;}
+.right_return{ width:200px; float:left; padding-left:20px; margin-top:10px;}
+.right_return h1{ margin-top:50px; float:right;}
+.right_return h1 a, .wiki_text a{ color:#5392cb;}
+.wiki_text{ float:left; width:640px; margin-top:30px; }
+.writings span{ line-height:46px; padding-left:10px;}
+.Hide{ width:640px; float:left;}
