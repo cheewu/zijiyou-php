@@ -1,0 +1,115 @@
+*{ padding:0px; margin:0px; }
+body{ background: #e8e8e8 url(../images/wrap.jpg) repeat-x; font: 12px/162% Arial,Helvetica,sans-serif;  color:#666666;}
+a{ color:#666666; text-decoration:none;}
+h1,h2,h3,h4,h5,h6{ font-size:14px; font-weight:normal;}
+#box{ width:900px; margin: 0 auto;}
+
+/* header */
+#head{ width:900px; float:left; height:60px;}
+.logo{ float:left; margin-top:8px;}
+.nav{ width:250px; float:left; margin-top:20px; margin-left:30px;}
+.nav ul li{ list-style:none; float:left; padding-right:25px; font-size:16px;}
+.nav a{ color:#FFFFFF;}
+.search{ width:300px; float:left; margin-top:18px; }
+.sousuo{ width:250px; float:left; background:#FFFFFF; border:1px solid #FFFFFF; border-top:1px solid #F1F0EE; height:24px; padding-left:5px; line-height:24px; color:#AAAAAA;} 
+.button{ float:left;} 
+.topuser{ width:160px; float:right; margin-top:20px; color:#FFFFFF;}
+.topuser a{ color:#FFFFFF; padding-left:8px; padding-right:8px;}
+
+/* main */
+#middle{ width:900px; float:left;}
+.classify{ width:900px; float:left; margin-top:8px; color:#666666;}
+.classify a{ color:#666666;}
+#middle_left{ width:680px; float:left; }
+.travel{ width:640px; float:left; background:#FFFFFF; margin-top:10px; padding:10px 20px 20px 20px;}
+.insets{ float:left;}
+.headline{ float:left; margin-top:8px; font-size:28px; }
+.shoucang{ float:left; text-align:center; width:65px; height:25px; margin-top:5px; margin-left:10px; background:#abb8c4; line-height:25px; }
+.shoucang a{ color:#FFF;}
+.Time{ float:right; margin-top:8px;}
+.Introduction{ width:640px; float:left; line-height:18px; margin-top:10px;}
+.Introduction a{ text-decoration:underline; color:#5392cb;}
+.Label{ width:640px; float:left; margin-top:10px;}
+.Label a{ background:#feedba; padding-left:10px; padding-right:10px; float:left; list-style:none; margin-right:10px;}
+.destination_tu{ width:640px; float:left; margin-top:12px;}
+.travel h1{ font-size:14px; color:#666666; margin-top:8px;}
+.travel p{ width:640px; float:left; color:#666666; margin-top:15px; line-height:20px;}
+.basic{ color:#B3BBC3; font-size:12px;}
+.travel h2{ float:left; margin-top:15px;}
+.travel h3{ float:left; padding-left:12px; padding-top:10px;}
+.travel h4{ width:640px; float:left; font-size:12px; margin-top:10px;}
+.travel h4 a{ text-decoration:underline;}
+.travel .wuno{ padding-left:0px;}
+.labelwz{ width:640px; float:left; font-size:12px; margin-top:10px;}
+.labelwz a{ color:#B3BBC3;}
+.page{ width:140px; float:left; line-height:30px; margin-top:10px; margin-bottom:10px; padding-left:540px;}
+.page a{ width:60px; height:30px; text-align:center; margin-left:10px; background:#FFFFFF; float:left; }
+#middle_right{ width:220px; float:left; background:#e0e1e2; margin-top:10px; }
+.aside{ width:220px; float:left;  border-bottom:1px dotted #CCC;}
+.aside_text{  margin-top:10px; padding-bottom:10px; }
+.aside ul li{ list-style:none; font-size:14px; margin-left:1px;}
+.aside ul li a{ width:195px; float:left; height:35px; line-height:35px; padding-left:25px; }
+.aside .shouye a,.aside .shouye a:hover{ background:url(../images/sy.jpg) no-repeat; color:#FFFFFF; border-top:none;}
+.offside{ width:220px; float:left; margin-top:10px;  border-bottom:1px dotted #CCC; }
+.offside h1{ padding-left:15px;  padding-bottom:5px; line-height:30px;}
+.description{ border-top:1px solid #DADFE1;padding-bottom:10px; }
+.description p{ width:195px; padding-left:25px; font-size:12px; color:#666666; margin-top:8px; line-height:22px; }
+.description p a{ color:#666666;}
+.jingdian{ width:640px; float:left;}
+.jingdian ol{ width:90px; float:left; padding-right:20px; margin-top:20px;}
+.jingdian ol dt{ width:90px; float:left; }
+.jingdian ol dd{ width:90px; float:left; font-size:12px; text-align:center; line-height:24px;}
+.jingdian ol dd a{ color:#5392cb;}
+.jingdian .tu_jd{ padding:0px;}
+.quguo{ width:220px; float:left; border-top:1px solid #DADFE1;  padding-bottom:5px;}
+.quguo ol{ width:90px; float:left; padding-left:13px;}
+.quguo ol dt{ width:90px; float:left; }
+.quguo ol dd{ width:90px; float:left; font-size:12px; text-align:center; line-height:22px;}
+.quguo ol dd a{ color:#666666;}
+.description h2{ float:left;  padding-left:15px; padding-bottom:10px; }
+.travel_Title{ width:640px; float:left; font-size:14px; margin-top:5px;}
+.Inform{ width:640px; float:left; margin-top:8px; }
+.Inform h1{ color:#5392cd; font-size:12px;}
+.Inform h1 a{ color:#5392cb;}
+.comefrom{ width:640px; float:left; color:#B3BBC3; margin-top:2px;}
+.display{ width:640px; float:left; line-height:18px; margin-top:3px;}
+.youji_tu{ float:left; margin-top:8px; }
+.youji_tu h6{ float:left; margin-right:8px;}
+
+/* footer */
+#footer{ width:100%; float:left;}
+.footer_content{ width:900px; float:left; text-align:center; margin-top:20px; font-size:12px; padding-bottom:40px;}
+
+/* attraction */
+.jd_tu{ width:150px; float:left; margin-top:10px;}
+.jd_content{ width:470px; float:left; margin-left:20px;  margin-bottom:10px;}
+.jd_content h1{ color:#666666; float:left;}
+.jd_content span{ width:200px; float:left;}
+.sc{ margin-top:4px; float:left; padding-left:10px;}
+.jd_content h5{ width:470px; float:left; color:#666666; margin-top:3px; font-size:12px;}
+.jd_content .miaoshu{ margin-top:10px; }
+.jd_nr{ width:360px; float:left; margin-left:20px;  margin-bottom:10px;}
+.jd_nr a{ color:#5392cb; text-decoration:underline;}
+.jd_nr h5{ width:360px; float:left; margin-top:3px; font-size:12px;}
+.jd_img{ width:250px; float:left;}
+.jdpoi{ width:640px; float:left; margin-top:15px;}
+.jd_img ul li{ float:left; list-style:none; margin-right:10px; margin-top:10px;}
+.jd_img ul img{ border:none;  float:left;}
+.jd_img .tu_jd{ margin-right:0px;}
+.jd_img .jd_click { border:2px solid #e68c5b;}
+
+
+/* youji */
+.youji_ss{ width:210px; float:left; height:32px; background:#FFFFFF; border-top:1px solid #BFCACA; margin-top:10px; margin-left:10px;}
+.Search_label{ width:160px; float:left; background:#FFFFFF; margin-top:3px; border:1px solid #FFFFFF;  height:24px; padding-left:5px; line-height:24px; color:#AAAAAA;} 
+.anniu{ margin-top:5px; float:left; margin-left:4px;}
+
+/* tupian */
+.tupian{ margin-top:10px; margin-bottom:10px;}
+
+/* ditu */
+.Layout{ width:860px; float:left; background:#FFFFFF; padding:20px 20px 20px 20px; margin-top:10px;}
+.ditu{ float:left;}
+.ditu_center{ width:860px; float:left;}
+.ditu_text{ width:860px; float:left; margin-top:10px;}
+.ditu_text span{margin-left:3px; margin-right:5px; margin-top:5px;  font-size:14px; padding-bottom:5px;}
