@@ -25,8 +25,11 @@ foreach($_COOKIE as $key => $val) {
 		$_SCOOKIE[(substr($key, $prelength))] = empty($magic_quote) ? saddslashes($val) : $val;
 	}
 }
-//init db
-$_SGLOBAL['db'] = "";
+
+// init db
+$_SGLOBAL['db'] = new MongoHandle($_SC['MongoDB']['server'], $_SC['MongoDB']['dbname'], $_SC['MongoDB']['options']);
+// init flicker
+$_SGLOBAL['flicker'] = new Flicker();
 
 //CSS文件
 //tpl_include_ex_css('reset.css');//子css文件

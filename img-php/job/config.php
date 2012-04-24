@@ -1,13 +1,4 @@
 <?php
-/**
- * Config File
- * 
- * @author 
- */
-if(!defined('IN_SYSTEM')) { exit('Access Denied'); }
-
-$_SC['debug'] = 1;
-
 // this system DB
 $_SC['MongoDB'] = array(
 	'server'	=> 'mongodb://202.85.213.54:27017',
@@ -24,13 +15,6 @@ $_SC['flicker'] = array(
 	'auth_url'	 => 'http://flickr.com/services/auth/',
 );
 
-//页面编码
-$_SC['page_charset'] = 'UTF-8';
-//Gzip
-$_SC['gzipcompress'] = 1;
+// cache dir
+$_SC['img_dir'] = ROOT.'../cache/';
 
-//Cookie
-$_SC['cookiepre'] = 'wdt_';
-$_SC['cookiedomain'] = $_SERVER["HTTP_HOST"];
-$_SC['cookiepath'] = '/';
-$_SC['cookie_expire'] = 86400*7*2;//记住登录的过期时间
