@@ -25,7 +25,7 @@ foreach(array('Region', 'POI') AS $collection) {
 		    curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);    
 	    	//maximum amount of HTTP redirections to follow
 			curl_setopt($ch, CURLOPT_MAXREDIRS, 2);
-			curl_setopt($ch, CURLOPT_URL, $this->img_url);
+			curl_setopt($ch, CURLOPT_URL, $url);
 			curl_setopt($ch, CURLOPT_FILE, $fp);
 			curl_exec($ch);
 			// http 200正确 否则返回空
@@ -34,7 +34,7 @@ foreach(array('Region', 'POI') AS $collection) {
 			} 
 			$imagick->readImageFile($fp);
 			$imagick->writeimage($dirname.$filename);
-			exit;
+			echo "$collection {$item['name']}\n";
 		}
 	}
 }
