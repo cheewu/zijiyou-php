@@ -24,6 +24,8 @@ $_SC['flicker'] = array(
 	'auth_url'	 => 'http://flickr.com/services/auth/',
 );
 
+$_SC['img_dir'] = ROOT.'cache/';
+
 //页面编码
 $_SC['page_charset'] = 'UTF-8';
 //Gzip
