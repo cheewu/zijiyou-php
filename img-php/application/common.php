@@ -28,6 +28,10 @@ foreach($_COOKIE as $key => $val) {
 
 // init db
 $_SGLOBAL['db'] = new MongoHandle($_SC['MongoDB']['server'], $_SC['MongoDB']['dbname'], $_SC['MongoDB']['options']);
+// page db
+$_SGLOBAL['pagedb'] = new MongoHandle($_SC['MongoDB']['server'], 'page', $_SC['MongoDB']['options']);
+// image resize
+$_SGLOBAL['imager'] = new Image($_SC['img_dir']);
 // init flicker
 $_SGLOBAL['flicker'] = new Flicker();
 

@@ -25,18 +25,21 @@ function fr_init()
 	//预包含application文件
 	_fr_pre_include_application();
 	
-	if(empty($_GET['_path']) && strpos($_SERVER['PHP_SELF'], "=")){
-		$_GET['_path'] = substr($_SERVER['PHP_SELF'], strpos($_SERVER['PHP_SELF'], "=") + 1);
-	} else {
-		$_GET['_path'] = "";
-	}
-	
+//	if(empty($_GET['_path']) && strpos($_SERVER['PHP_SELF'], "=")){
+//		$_GET['_path'] = substr($_SERVER['PHP_SELF'], strpos($_SERVER['PHP_SELF'], "=") + 1);
+//	} else {
+//		$_GET['_path'] = "";
+//	}
+
 	/* URL路由 */
 	$request_url = _fr_init_router();
 	$request_path = _fr_init_router_query($request_url);
 	
 	/* 获取请求路径 */
-	$_SGLOBAL['_path'] = array_filter(explode('/', $request_path), 'trim');//数组第一个元素是空的，因为第一个字符是'/'
+	$_SGLOBAL['_path'] = array_filter(
+		explode('/', $request_path), // 数组第一个元素是空的，因为第一个字符是'/'
+		create_function('$str', 'return trim($str) !== "";')
+	);
 	if( empty($_SGLOBAL['_path']) ) { 
 		$_SGLOBAL['_path'] = array('index'); 
 	} else {
@@ -201,7 +204,7 @@ function _fr_controller_action(){
 			//$_SGLOBAL['_path'] 第2部分之后的为参数
 			$_SGLOBAL['controller'] = new $controller();
 			if(in_array($action, get_class_methods($controller))){
-				call_user_func_array(array($_SGLOBAL['controller'], $action), array_filter($param, 'rawurldecode'));break;
+				call_user_func_array(array($_SGLOBAL['controller'], $action), array_map('rawurldecode', $param));break;
 			}
 		}
 		set_http_response_code(404);

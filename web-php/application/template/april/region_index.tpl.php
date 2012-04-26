@@ -82,7 +82,9 @@ HTML;
 	foreach($solr_res AS $article) {
 		$author = @$article['author'] ?: "";
 		$title = @$article['title'] ?: "";
-		$article_body = tpl_article_substr($article['content'], 500);
+		$article['content'] = preg_replace("#\s#", '', $article['content']);
+		$article['content'] = preg_replace("#-{10,}#", '', $article['content']);
+		$article_body = tpl_article_substr($article['content'], 300);
 		echo <<<HTML
 				<div class="Inform">
 					<h1>$title</h1>
@@ -95,9 +97,10 @@ HTML;
 HTML;
 			foreach($article['images'] AS $index => $img) {
 				if($index > 5) { break; }
-				$img = img_proxy($img, $article['url'], 48, 71);
+				$img = img_proxy($img, $article['url'], 48, 999);
+				// width="71" 
 				echo <<<HTML
-						<h6><img src="$img" width="71" height="48" /></h6>
+						<h6><img src="$img" height="48" /></h6>
 HTML;
 			}	
 			echo <<<HTML

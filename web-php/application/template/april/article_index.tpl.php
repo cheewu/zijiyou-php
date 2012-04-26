@@ -7,11 +7,15 @@
 foreach($solr_res AS $article) {
 	$author = @$article['author'] ?: "";
 	$title = @$article['title'] ?: "";
+	$article['content'] = strip_tags($article['content']);
+	$article['content'] = preg_replace("#\s#", '', $article['content']);
+	$article['content'] = preg_replace("#[\-=]{10,}#", '', $article['content']);
+	$contents = utf8_substr_ifneeed($article['content'], 300, false, '...');
 	echo <<<HTML
 		<div class="travel">
 			<div class="basic">$author</div>
 			<h1>$title</h1>
-			{$article['content']}
+			{$contents}
 HTML;
 	$keywords = implode("&nbsp;&nbsp;&nbsp;", $article['keyword']);
 	if(!empty($keywords)) { 

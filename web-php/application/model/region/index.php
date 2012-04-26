@@ -35,6 +35,7 @@ foreach($solr_res AS $key => &$value) {
 	$value['keyword'] = get_article_keywords($value['_id'], 'tpl_article_keyword_format');
 	$images = array();
 	foreach($value['images'] AS $image) {
+		preg_match("#real_src\s*=\s*[\"']([^\"]*)[\"']#", $image, $matches) || 
 		preg_match("#src\s*=\s*[\"']([^\"]*)[\"']#", $image, $matches);
 		!in_array($matches[1], $images) && $images[] = $matches[1];
 	}

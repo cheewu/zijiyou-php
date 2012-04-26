@@ -39,7 +39,7 @@ class Flicker {
 	 */
 	public function go($param = array()) {
 		global $_SGLOBAL;
-		if(!empty($param['lat'])) {
+		if(isset($param['lat'])) {
 			$key = $param['lat'].$param['lon'];
 		} else {
 			$key = md5($param['text']);
