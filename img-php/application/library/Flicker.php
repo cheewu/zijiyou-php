@@ -44,6 +44,7 @@ class Flicker {
 		} else {
 			$key = md5($param['text']);
 		}
+		/*
 		$key = 'flicker_'.$key;
 		$val = $_SGLOBAL['m']->get($key);
 		
@@ -51,6 +52,7 @@ class Flicker {
 		
 	    //no found
 	    if( $_SGLOBAL['m']->getResultCode() == Memcached::RES_NOTFOUND ) {
+	    */
 	        /* the key does not exist */
 	        $param_default = array(
 				'api_key' => $this->api_key,
@@ -64,13 +66,14 @@ class Flicker {
 			$res_string = shttp_request($url, array('timeout' => 0));
 			$res = preg_replace("#jsonFlickrApi\((.*)\)#i", '$1', $res_string);
 	        $res = json_decode($res, true);
-	        $_SGLOBAL['m']->set($key, $res);
+	        //$_SGLOBAL['m']->set($key, $res);
 	        
 	        return $res;
+	    /*
 	    }else{
-	        /* log error */
+	         log error 
 	    }
-		
+		*/
 		return array();
 	}
 	
@@ -78,7 +81,7 @@ class Flicker {
 	 * get poi pics
 	 * @param array $poi_item
 	 */
-	public function get_poi_pic($poi_item) {
+	public function get_pic($item) {
 		$param = array(
 			'method' => 'flickr.photos.search',
 			'auth_token' => '72157629642190479-09565cd2248fa635',
@@ -96,10 +99,10 @@ class Flicker {
 	//		'text' => $poi['name'],
 	//		'contacts' => $poi['name'],
 		);
-		if(!empty($poi_item['center'])) {
-			list($param['lat'], $param['lon']) = $poi_item['center'];
+		if(!empty($item['center'])) {
+			list($param['lat'], $param['lon']) = $item['center'];
 		} else {
-			$param['text'] = $poi_item['name'];
+			$param['text'] = $item['name'];
 		}
 		
 		$photos = $this->go($param);
