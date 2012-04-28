@@ -1,13 +1,17 @@
 <?php
 class cache extends controller {
 	
-	public function article($_id, $index, $width, $height) {
-		global $_SGLOBAL;
-		$res = $_SGLOBAL['pagedb']->Article_select_one(array('_id' => new MongoID($_id)), array('images', 'url'));
-		$matches = array();
-		preg_match("#real_src\s*=\s*[\"']([^\"]*)[\"']#", $res['images'][$index], $matches) || 
-		preg_match("#src\s*=\s*[\"']([^\"]*)[\"']#", $res['images'][$index], $matches);
-		$_SGLOBAL['imager']->get($matches[1], $width, $height, $res['url'], true);
-	}
-	
+	public function get($md5, $width, $height) {
+		global $_SC, $_SGLOBAL;
+		$prefix = $_SC['img_cache_prefix'];
+		$key = $prefix.$md5;
+		$param = $_SGLOBAL['m']->get($key);
+		//no found
+	    if( $_SGLOBAL['m']->getResultCode() == Memcached::RES_NOTFOUND ) {
+	        /* the key does not exist */
+	        header("HTTP/1.1 404 Not Found");
+	    }
+	    list($url, $refer) = $param;
+	    $_SGLOBAL['imager']->get($url, $width, $height, $refer, true);
+	}	
 }

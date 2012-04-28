@@ -1,6 +1,22 @@
 <?php
 
 /**
+ * generate curmbs
+ */
+function crumbs() {
+	$param = func_get_args();
+	$curmbs = array(
+		'<a href="#">首页</a>',
+		'<a href="#">目的地指南</a>'
+	);
+	foreach ($param AS $item) {
+		empty($item[1]) && $item[1] = '#';
+		$curmbs[] = '<a href="'.$item[1].'">'.$item[0].'</a>';
+	}
+	return implode("&nbsp;&gt;&nbsp;", $curmbs);
+}
+
+/**
  * img cache
  * @param string $url
  * @param int $width
@@ -8,6 +24,24 @@
  */
 function img_cache($url, $weight, $height) {
 	return img_proxy($url, $_SERVER['HTTP_HOST'], $height, $weight);
+}
+
+/**
+ * get poi pic
+ * @param string $id
+ */
+function get_poi_pic($id) {
+	global $_SC;
+	return $_SC['img_bed'].'poi'.DIRECTORY_SEPARATOR.$id.'.png';
+}
+
+/**
+ * get article pic
+ * @param string $id
+ */
+function get_article_pic_by_index($id, $index, $width, $height) {
+	global $_SC;
+	return $_SC['img_bed'].'article'.DIRECTORY_SEPARATOR.$id."{$index}_{$width}x{$height}.png";
 }
 
 /**
@@ -22,19 +56,22 @@ function google_map_icon_url($count){
  * proxy img
  * @param string $url
  * @param string $refer
+ * @param int $width
  * @param int $height
- * @param int $weight
  */
-function img_proxy($url, $refer, $height, $weight) {
-	global $_SC;
-	$proxy_host = $_SC['img_proxy_url'];
-	$param = array(
-		'u' => $url,
-		'r' => $refer,
-		'w' => $weight,
-		'h' => $height,
-	);
-	return $proxy_host."?".http_build_query($param);
+function img_proxy($url, $refer, $width, $height) {
+	global $_SC, $_SGLOBAL;
+	$prefix = $_SC['img_cache_prefix'];
+	$md5 = md5($url.$refer);
+	$key = $prefix.$md5;
+	$_SGLOBAL['m']->get($key);
+	//no found
+    if( $_SGLOBAL['m']->getResultCode() == Memcached::RES_NOTFOUND ) {
+        /* the key does not exist */
+        $param = array($url, $refer);
+        $_SGLOBAL['m']->set($key, $param);
+    }
+    return $_SC['img_bed'].'cache'.DIRECTORY_SEPARATOR.$md5."_{$width}x{$height}.png";
 }
 
 /**

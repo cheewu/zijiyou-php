@@ -34,6 +34,8 @@ $_SGLOBAL['pagedb'] = new MongoHandle($_SC['MongoDB']['server'], 'page', $_SC['M
 $_SGLOBAL['imager'] = new Image($_SC['img_dir']);
 // init flicker
 $_SGLOBAL['flicker'] = new Flicker();
+// init memecached
+init_memcached();
 
 //CSS文件
 //tpl_include_ex_css('reset.css');//子css文件

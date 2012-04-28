@@ -31,6 +31,14 @@ $_SC['page_charset'] = 'UTF-8';
 //Gzip
 $_SC['gzipcompress'] = 1;
 
+// memcached
+$_SC['memcached'] = array(
+    array('127.0.0.1', 11211),//host, port, weight
+);
+
+// img cache prefix
+$_SC['img_cache_prefix'] = "pic_cache_";
+
 //Cookie
 $_SC['cookiepre'] = 'wdt_';
 $_SC['cookiedomain'] = $_SERVER["HTTP_HOST"];

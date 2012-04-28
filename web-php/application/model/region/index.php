@@ -34,20 +34,20 @@ foreach($solr_res AS $key => &$value) {
 	$value['content'] = strip_tags($value['content']);
 	$value['keyword'] = get_article_keywords($value['_id'], 'tpl_article_keyword_format');
 	$images = array();
-	foreach($value['images'] AS $image) {
-		preg_match("#real_src\s*=\s*[\"']([^\"]*)[\"']#", $image, $matches) || 
-		preg_match("#src\s*=\s*[\"']([^\"]*)[\"']#", $image, $matches);
-		!in_array($matches[1], $images) && $images[] = $matches[1];
-	}
-	$value['images'] = $images;
+//	foreach($value['images'] AS $image) {
+//		preg_match("#real_src\s*=\s*[\"']([^\"]*)[\"']#", $image, $matches) || 
+//		preg_match("#src\s*=\s*[\"']([^\"]*)[\"']#", $image, $matches);
+//		!in_array($matches[1], $images) && $images[] = $matches[1];
+//	}
+//	$value['images'] = $images;
 }
 
 $sub_pois = $_SGLOBAL['db']->POI_select(array('regionId' => $region['_id']), null, array('rank' => -1), 12);
 
-foreach($sub_pois AS $key => $poi) {
-	$photos = $_SGLOBAL['flicker']->get_poi_pic($poi);
-	$sub_pois[$key]['img_icon'] = !empty($photos[0]) ? flicker_photo_url($photos[0], 'q') : "";
-}
+//foreach($sub_pois AS $key => $poi) {
+//	$photos = $_SGLOBAL['flicker']->get_poi_pic($poi);
+//	$sub_pois[$key]['img_icon'] = !empty($photos[0]) ? flicker_photo_url($photos[0], 'q') : "";
+//}
 
 $also_go = $_SGLOBAL['db']->Correlation_select(
 				array('name' => $region['name'], 'category' => 'region'),
@@ -59,8 +59,8 @@ $also_go = $_SGLOBAL['db']->Correlation_select(
 foreach($also_go AS $key => &$value) {
 	$tmp_poi = $_SGLOBAL['db']->Region_select_one(array('name' => array('$regex' => $value['keyword'])));
 	$value = array_merge($value, $tmp_poi);
-	$photos = $_SGLOBAL['flicker']->get_poi_pic($value);
-	$value['img_icon'] = !empty($photos[0]) ? flicker_photo_url($photos[0], 'q') : "";
+//	$photos = $_SGLOBAL['flicker']->get_poi_pic($value);
+//	$value['img_icon'] = !empty($photos[0]) ? flicker_photo_url($photos[0], 'q') : "";
 }
 unset($value);
 

@@ -1,20 +1,42 @@
 <?php include 'header.tpl.php';?>
 <div id="middle">
-	<div class="classify"><a href="#">首页</a> &gt; <a href="#">目的地指南</a> &gt; <a href="#">北京</a> </div>
-
+	<div class="classify">
+		<?=crumbs(array($region['name']))?>
+	</div>
 	<div id="middle_left">
 <?php 
-foreach($solr_res AS $article) {
+foreach($solr_res AS $article_index => $article) {
 	$author = @$article['author'] ?: "";
 	$title = @$article['title'] ?: "";
 	$article['content'] = strip_tags($article['content']);
 	$article['content'] = preg_replace("#\s#", '', $article['content']);
 	$article['content'] = preg_replace("#[\-=]{10,}#", '', $article['content']);
 	$contents = utf8_substr_ifneeed($article['content'], 300, false, '...');
+	$r_id = strval($region['_id']);
+	$a_id = strval($article['_id']);
 	echo <<<HTML
 		<div class="travel">
 			<div class="basic">$author</div>
-			<h1>$title</h1>
+			<h1><a href="/detail/$r_id/$a_id">$title</a></h1>
+HTML;
+	$image_count = count($article['images']);
+	$lines = intval($image_count / 3);
+	$lines > 3 && $lines = 3;
+	if($lines > 0) {
+		foreach($article['images'] AS $index => $img) {
+			$current_line = intval($index / 3) + 1;
+			if($current_line > $lines) {break;}
+			$class = ($index % 3 == 0) ? "wuno" : "";
+			$img = get_article_pic_by_index(strval($article['_id']), $index, 205, 110);
+			echo <<<HTML
+			<h3 class="$class arti_{$article_index}_{$current_line}">
+				<img src="{$img}" line="$current_line" width="205" height="110" onerror="$('.arti_{$article_index}_{$current_line}').css('display', 'none');"/>
+			</h3>
+HTML;
+		}
+	}
+	echo <<<HTML
+			<br />
 			{$contents}
 HTML;
 	$keywords = implode("&nbsp;&nbsp;&nbsp;", $article['keyword']);

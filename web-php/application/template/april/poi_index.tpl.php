@@ -1,6 +1,8 @@
 <?php include 'header.tpl.php';?>
 <div id="middle">
-	<div class="classify"><a href="#">首页</a> &gt; <a href="#">目的地指南</a> &gt; <a href="#"><?=$name?></a> </div>
+	<div class="classify">
+		<?=crumbs(array($region['name']))?>
+	</div>
 	<div id="middle_left">
 		<div class="travel">
 			<div class="headline"><?=$region['name']?>:<?=$name?></div>

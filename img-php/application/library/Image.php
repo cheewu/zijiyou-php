@@ -100,6 +100,7 @@ class Image {
 		$this->http_refer = trim($http_refer);
 		$this->is_cut = $is_cut;
 		$this->load();
+		isset($_GET['debug']) && pr($this);
 		!$this->is_cached && $this->resize();
 		$this->out();
 	}
@@ -148,7 +149,7 @@ class Image {
 	    curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);    
     	//maximum amount of HTTP redirections to follow
 		curl_setopt($ch, CURLOPT_MAXREDIRS, 2);
-		curl_setopt($ch, CURLOPT_TIMEOUT, 3);
+		curl_setopt($ch, CURLOPT_TIMEOUT, 5);
 		curl_setopt($ch, CURLOPT_URL, $this->url);
 		curl_setopt($ch, CURLOPT_FILE, $fp);
 		curl_exec($ch);
@@ -164,8 +165,8 @@ class Image {
 	 * 改变图片大小
 	 */
 	function resize() {
-		$origin_height 	= $this->imagick->getimageheight();
 		$origin_width 	= $this->imagick->getimagewidth();
+		$origin_height 	= $this->imagick->getimageheight();
 		($this->width <= 0 && $this->height <= 0) && $this->error_triger();
 		do {
 			if($origin_height <= $this->height && $origin_width <= $this->width) {
@@ -179,15 +180,19 @@ class Image {
 			}
 			if($this->width == 0 || $this->height == 0) {
 				$this->imagick->thumbnailimage($this->width, $this->height, false);
-				$this->width == 0 && $this->width = $this->imagick->getimagewidth();
-				$this->height == 0 && $this->height = $this->imagick->getimageheight();
+				$origin_width 	= $this->imagick->getimagewidth();
+				$origin_height 	= $this->imagick->getimageheight();
+				break;
+				//$this->width == 0 && $this->width = $this->imagick->getimagewidth();
+				//$this->height == 0 && $this->height = $this->imagick->getimageheight();
 			} else {
 				if($this->is_cut) {
 					$offsite_x = $offsite_y = 0;
 					if($this->width / $origin_width > $this->height / $origin_height) {
 						$this->imagick->thumbnailimage($this->width, 0, false);
 						$modi_height = $this->imagick->getimageheight();
-						$offsite_y = round(($modi_height - $this->height) / 2);
+						//$offsite_y = round(($modi_height - $this->height) / 2);
+						$offsite_y = 0;
 					} else {
 						$this->imagick->thumbnailimage(0, $this->height, false);
 						$modi_width = $this->imagick->getimagewidth();
@@ -207,6 +212,7 @@ class Image {
 				$this->imagick = $filling_background;
 			}
 			$this->cache_in($this->width, $this->height);
+			return;
 		} while(0);
 		
 		// 缓存路径

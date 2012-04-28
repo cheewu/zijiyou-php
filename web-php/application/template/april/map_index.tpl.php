@@ -1,6 +1,8 @@
 <?php include 'header.tpl.php';?>
 <div id="middle">
-	<div class="classify"><a href="#">首页</a> &gt; <a href="#">目的地指南</a> &gt; <a href="#">北京</a> </div>
+	<div class="classify">
+		<?=crumbs(array($region['name'], strval($region['_id'])))?>
+	</div>
 	<div class="Layout">
 		<div id="map_area" class="ditu" style="width:860px;height:415px"></div>
 		<div class="ditu_text">

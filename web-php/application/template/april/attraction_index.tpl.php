@@ -1,7 +1,9 @@
 <?php include 'header.tpl.php'; ?>
 
 <div id="middle">
-	<div class="classify"><a href="#">首页</a> &gt; <a href="#">目的地指南</a> &gt; <a href="#">北京</a> </div>
+	<div class="classify">
+		<?=crumbs(array($region['name']))?>
+	</div>
 	<div id="middle_left">
 <?php 
 	foreach($sub_pois AS $poi) {
@@ -50,7 +52,7 @@ HTML;
 		<Div class="aside">
 			<ul>
 				<li><A href="/region/<?=$region_id?>">首页</A></li>
-				<li><A href="#">游记</A></li>
+				<li><A href="/article/<?=$region_id?>">游记</A></li>
 				<li class="shouye"><A href="#">景点</A></li>
 				<li><A href="#">图片</A></li>
 				<li><A href="/map/<?=$region_id?>">地图</A></li>

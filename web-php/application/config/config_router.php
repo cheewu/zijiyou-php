@@ -22,5 +22,7 @@ $_SCONFIG['router'] = array(
 	array('#/?attraction/(\w{24})/?#', '/attraction/?region_id=${1}', 'break'),
 	array('#/?article/(\w{24})/?#', '/article/?region_id=${1}', 'break'),
 	array('#/?map/(\w{24})/?#', '/map/?region_id=${1}', 'break'),
+	
+	array('#/?detail/(\w{24})/(\w{24})/?#', '/article/detail/?region_id=${1}&article_id=${2}', 'break'),
 );
 /* /router */

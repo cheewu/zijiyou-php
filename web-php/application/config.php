@@ -56,3 +56,9 @@ $_SC['cookie_expire'] = 86400*7*2;//记住登录的过期时间
 
 // img proxy
 $_SC['img_proxy_url'] = "http://img.zijiyou.com/get.php";
+
+// img zijiyou
+$_SC['img_bed'] = "http://img.zijiyou.com/";
+
+// img cache prefix
+$_SC['img_cache_prefix'] = "pic_cache_";

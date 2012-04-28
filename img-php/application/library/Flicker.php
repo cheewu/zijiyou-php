@@ -39,12 +39,11 @@ class Flicker {
 	 */
 	public function go($param = array()) {
 		global $_SGLOBAL;
-		if(!empty($param['lat'])) {
+		if(!isset($param['lat'])) {
 			$key = $param['lat'].$param['lon'];
 		} else {
 			$key = md5($param['text']);
 		}
-		/*
 		$key = 'flicker_'.$key;
 		$val = $_SGLOBAL['m']->get($key);
 		
@@ -52,7 +51,6 @@ class Flicker {
 		
 	    //no found
 	    if( $_SGLOBAL['m']->getResultCode() == Memcached::RES_NOTFOUND ) {
-	    */
 	        /* the key does not exist */
 	        $param_default = array(
 				'api_key' => $this->api_key,
@@ -63,17 +61,15 @@ class Flicker {
 			$this->sign($param);
 			
 			$url = $this->api_url."?".http_build_query($param);
-			$res_string = shttp_request($url, array('timeout' => 0));
+			$res_string = shttp_request($url, array('timeout' => 5));
 			$res = preg_replace("#jsonFlickrApi\((.*)\)#i", '$1', $res_string);
 	        $res = json_decode($res, true);
-	        //$_SGLOBAL['m']->set($key, $res);
+	        $_SGLOBAL['m']->set($key, $res);
 	        
 	        return $res;
-	    /*
 	    }else{
-	         log error 
+	         //log error 
 	    }
-		*/
 		return array();
 	}
 	
