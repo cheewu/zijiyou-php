@@ -254,19 +254,21 @@ function tpl_article_substr($content, $length) {
  * @param array $poi
  * @return array
  */
-function tpl_get_geo_content(&$poi){
-	//init
+function tpl_get_geo_content(&$poi, $region_id = ''){
+	// init
 	$content = '';
-	//取三个类别
+	// get wiki
+	$wiki = get_wiki_content($poi['name']);
+	$poi['desc'] = trim($wiki['content']);
+	// 取三个类别
 	foreach(array('name' => '名称', 'traffic' => '交通', 'desc' => '描述') AS $key => $val){
-		if($key == 'desc' && empty($poi['desc'])){
-			$wiki = get_wiki_content($poi['name']);
-			$poi['desc'] = trim($wiki['content']);
-		}
 		if(!empty($poi[$key])){
 			$tmp = utf8_substr_ifneeed(trim(strip_tags($poi[$key])), 150);
 			if($key == 'name'){
 				$tmp = '<a href="/poi/'.$poi['_id'].'" target="_blank">'.$tmp.'</a>';
+			}
+			if($key == 'desc' && !empty($tmp) && !empty($region_id)){
+				$tmp = $tmp.'<a style="color:#5392CB; padding-left:5px;" href="/wiki/'.$region_id.'/'.strval($wiki['_id']).'" target="_blank">更多</a>';
 			}
 			$content .= <<<HTML
 			<tr>
@@ -282,3 +284,4 @@ HTML;
 	}
 	return '<table style="width:300px;table-layout:fixed;">'.$content.'</table>';
 }
+

@@ -15,7 +15,7 @@
 HTML;
 			}
 		?>
-			<div class="Introduction"><?=$wiki_substr?><A href="#">更多</A></div>
+			<div class="Introduction"><?=$wiki_substr?><A style='color:#5392CB; padding-left:5px;' href="/wiki/<?=$region_id?>/<?=strval($wiki['_id'])?>" target="_blank">更多</A></div>
 		<?php 
 		if(!empty($region_tag)) {
 			echo <<<HTML

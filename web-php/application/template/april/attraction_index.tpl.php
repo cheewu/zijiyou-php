@@ -10,15 +10,16 @@
 		!isset($poi['rank']) && $poi['rank'] = 0;
 		$half_star_cnt = get_start_cnt($poi['rank']);
 		!isset($poi['desc']) && $poi['desc'] = "";
-		$desc = utf8_substr_ifneeed(strip_tags($poi['desc']), 200, false, '...');
+		$desc = utf8_substr_ifneeed(strip_tags($poi['desc']), 200, false, '');
 		$address = !empty($poi['address']) ? "地址:".$poi['address'] : "";
 		$opentime = !empty($poi['opentime']) ? "开放时间:".$poi['opentime'] : "";
 		$price = !empty($poi['price']) ? "价格:".$poi['price'] : "";
 		$poi_id = (string)$poi['_id'];
+		$img = get_poi_pic($poi_id);
 		echo <<<HTML
 		<div class="travel">
 			<div class="jd_tu">
-				<img src="{$poi['img']}" width="150" height="150" />
+				<img src="$img" width="150" height="150" />
 			</div>
 			<div class="jd_content">
 				<h1><a href="/poi/$poi_id">{$poi['name']} </a><span style="color:orange;float:none;font-size:14px;">$half_star_cnt 分</span></h1>
@@ -99,10 +100,10 @@ HTML;
 		}
 		draw_marker(markerOptions, {display:false});
 		</script>
-		<div class="page">
-			<a href="<?=($pg > 1 && $total_res_cnt > 1) ? generate_url(array('pg' => $pg - 1)) : '#'?>">上一页</a> 
-			<a href="<?=($pg < $total_res_cnt) ? generate_url(array('pg' => $pg + 1)) : '#'?>">下一页</a>
-		</div>
+	</div>
+	<div class="page">
+		<a href="<?=($pg > 1 && $total_res_cnt > 1) ? generate_url(array('pg' => $pg - 1)) : '#'?>">上一页</a> 
+		<a href="<?=($pg < $total_res_cnt) ? generate_url(array('pg' => $pg + 1)) : '#'?>">下一页</a>
 	</div>
 </div>
 

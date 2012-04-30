@@ -44,7 +44,7 @@ foreach($sub_info AS $value){
 		'position' => array('lt' => $value['center'][0], 'lg' => $value['center'][1]),
 		'title' => $value['name'],
 	); 
-	$sub_geo_arr[$value['category']][$id]['content'] = tpl_get_geo_content($value);
+	$sub_geo_arr[$value['category']][$id]['content'] = tpl_get_geo_content($value, $region_id);
 	/* 处理google地图信息 end*/
 }
 

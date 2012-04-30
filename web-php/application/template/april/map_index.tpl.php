@@ -3,7 +3,7 @@
 	<div class="classify">
 		<?=crumbs(array($region['name'], strval($region['_id'])))?>
 	</div>
-	<div class="Layout">
+	<div id="center">
 		<div id="map_area" class="ditu" style="width:860px;height:415px"></div>
 		<div class="ditu_text">
 <?php 
@@ -100,7 +100,9 @@
 <?php
 	foreach($poi_attraction AS $index => $attraction) {
 		$wiki_all = get_wiki_content($attraction['name']);
-		$sub_wiki = utf8_substr_ifneeed($wiki_all['content'], 250, false, '...');
+		$sub_wiki = utf8_substr_ifneeed($wiki_all['content'], 250, false, '');
+		$wiki_id = strval($wiki_all['_id']);
+		!empty($sub_wiki) && $sub_wiki .= "<a style='color:#5392CB; padding-left:5px;' href='/wiki/$region_id/$wiki_id' target='_blank'>更多</a>";
 		$google_icon = google_map_icon_url($index);
 		$id = strval($attraction['_id']);
 		echo <<<HTML

@@ -20,12 +20,6 @@ $sub_pois = $_SGLOBAL['db']->POI_select($query, null, array('rank' => -1), $ps, 
 
 $total_res_cnt = $_SGLOBAL['db']->res_count;
 
-foreach($sub_pois AS $key => $poi) {
-	$photos = $_SGLOBAL['flicker']->get_poi_pic($poi);
-	$sub_pois[$key]['img'] = !empty($photos[0]) ? flicker_photo_url($photos[0], 'q') : "";
-	
-}
-
 $geo = (!empty($region['center']) && (!empty($region['center'][0]) || !empty($region['center'][1]))) 
 			? array('lt' => $region['center'][0], 'lg' => $region['center'][1]) : null;
 

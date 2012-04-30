@@ -76,6 +76,12 @@ class Image {
 	public $is_cut;
 	
 	/**
+	 * cache tag
+	 * @var string
+	 */
+	public $etag = 'zijiyou';
+	
+	/**
 	 * __construct
 	 */
 	public function __construct($img_dirname) {
@@ -100,7 +106,11 @@ class Image {
 		$this->http_refer = trim($http_refer);
 		$this->is_cut = $is_cut;
 		$this->load();
-		isset($_GET['debug']) && pr($this);
+		if(isset($_GET['debug'])) {
+			pr($this, 0);
+			pr($_SERVER);
+			
+		}
 		!$this->is_cached && $this->resize();
 		$this->out();
 	}
@@ -109,6 +119,13 @@ class Image {
 	 * 输出图片
 	 */
 	public function out() {
+		$etag = isset($_SERVER['HTTP_IF_NONE_MATCH']) ? $_SERVER['HTTP_IF_NONE_MATCH'] : "";
+		if($this->etag == $etag) {
+			header('Etag:'.$etag, true, 304); 
+		} else {
+			header('Etag:'.$this->etag); 
+		}
+		header("Last-Modified: " . gmdate("D, d M Y 00:00:00", time()) . " GMT");
 		if($this->is_cached) {
 			$this->cache_out();
 		} else {
