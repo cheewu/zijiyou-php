@@ -23,7 +23,7 @@ class Solr{
 	 * url
 	 * @var string
 	 */
-	private $url;
+	public $url;
 	
 	/**
 	 * __construct()

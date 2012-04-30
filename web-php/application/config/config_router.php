@@ -17,6 +17,7 @@ $_SCONFIG['router'] = array(
 	 *   	target: /index/2134/ -> /index/list/?list_id=2134
 	 *   	router: array("/^\/index\/(\d+)\/?/i", "/index/list/?list_id=${1}", 'break'),
 	 */
+	array('#/?state/(\w{24})/?#', '/state/?region_id=${1}', 'break'),
 	array('#/?region/(\w{24})/?#', '/region/?region_id=${1}', 'break'),
 	array('#/?poi/(\w{24})/?#', '/poi/?poi_id=${1}', 'break'),
 	array('#/?attraction/(\w{24})/?#', '/attraction/?region_id=${1}', 'break'),

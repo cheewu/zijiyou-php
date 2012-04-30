@@ -22,8 +22,13 @@ class search extends controller {
 	private function do_query() {
 		global $_SGLOBAL;
 		$region = $_SGLOBAL['db']->Region_select_one(array('name' => array('$regex' => $this->q)));
-		!empty($region['_id']) && shttp_redirect("/region/".(string)$region['_id']);
+		if(!empty($region['_id'])) {
+			if(isset($region['category']) && in_array($region['category'], array('province', 'country'))) {
+				shttp_redirect("/state/".strval($region['_id']));
+			} 
+			shttp_redirect("/region/".strval($region['_id']));
+		}
 		$poi = $_SGLOBAL['db']->POI_select_one(array('name' => array('$regex' => $this->q)));
-		!empty($poi['_id']) && shttp_redirect("/poi/".(string)$poi['_id']);
+		!empty($poi['_id']) && shttp_redirect("/poi/".strval($poi['_id']));
 	}
 }

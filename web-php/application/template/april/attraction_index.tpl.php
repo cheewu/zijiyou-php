@@ -2,7 +2,7 @@
 
 <div id="middle">
 	<div class="classify">
-		<?=crumbs(array($region['name']))?>
+		<?=crumbs($region_id)?>
 	</div>
 	<div id="middle_left">
 <?php 
@@ -62,10 +62,11 @@ HTML;
 		<div class="offside">
 			<h1>距离市中心</h1>
 			<div class="description">
-				<p>10公里以内</p>
-				<p>20公里以内</p>
-				<p>50公里以内</p>
-				<p>大于50公里</p>
+				<p><a href="<?=!empty($_GET['r']) ? generate_url(array('r' => null), true) : "#"?>">全部</a></p>
+				<p><a href="<?=($_GET['r'] != 10) ? generate_url(array('r' => 10), true) : "#"?>">10公里以内</a></p>
+				<p><a href="<?=($_GET['r'] != 20) ? generate_url(array('r' => 20), true) : "#"?>">20公里以内</a></p>
+				<p><a href="<?=($_GET['r'] != 50) ? generate_url(array('r' => 50), true) : "#"?>">50公里以内</a></p>
+<!--				<p>大于50公里</p>-->
 			</div>
 		</div>
 		<div class="offside">

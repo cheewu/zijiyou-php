@@ -21,6 +21,8 @@ $name = $poi['name'];
 
 $region = $_SGLOBAL['db']->Region_select_one(array('_id' => new MongoID($poi['regionId'])));
 
+$region_id = strval($region['_id']);
+
 $query = array('category' => 'attraction', 'regionId' => new MongoID($poi['regionId']));
 
 $attraction_nearby = $_SGLOBAL['db']->POI_geo_query($poi['center'], null, 10, $query);
@@ -46,11 +48,13 @@ $solr_res = $solr_res_original['response']['doc'];
 foreach($solr_res AS $key => &$value) {
 	$fragment = $_SGLOBAL['pagedb']->fragments_select_one(array('_id' => new MongoID($value['_id'])));
 	$article = $_SGLOBAL['pagedb']->Article_select_one(array('_id' => new MongoID($value['articleId'])), array('content', 'author'));
+	$value['author'] = @$article['author'] ?: "";
+	$value['fragment']['str'] = preg_replace("#<\s*img.*?real_src\s*=\s*[\"']([^\"]*)[\"'].*?/\s*>#", '<img src="$1" />', $value['fragment']['str']);
 	preg_match_all("#<\s*img\s*src\s*=\s*[\"']([^\"]*)[\"'].*?>#", $value['fragment']['str'], $matches);
 	$value['fragment']['str'] = strip_tags($value['fragment']['str']);
 	$value['keyword'] = get_article_keywords($value['articleId'], 'tpl_article_keyword_format');
 	//$value['content'] = strip_tags($article['content']);
-	$value['content'] = strip_tags($value['fragment']['str']);
+	//$value['content'] = strip_tags($value['fragment']['str']);
 	$value['fragment_keyword'] = $fragment['keyword'];
 	$images = array();
 	foreach($matches[1] AS $image) {
@@ -61,14 +65,17 @@ foreach($solr_res AS $key => &$value) {
 	foreach(explode(" ", $fragment['selected']) AS $fragment_select) {
 		$each_paragraph = $fragment['fragment'][$fragment_select];
 		//$each_paragraph = strip_tags($fragment['fragment'][$fragment_select]);
-		$each_paragraph = preg_replace("#[\r\n\s]+#s", " ", $each_paragraph);
-		$each_paragraph = preg_replace_callback("#<\s*img.*?real_src\s*=\s*[\"']([^\"]*)[\"'].*?/\s*>#", 
-			create_function('$matches', "return '<img src=\"'.img_proxy(\$matches[1], '{$value['url']}', 9999, 590).'\"/>';"), $each_paragraph);
-		$each_paragraph = preg_replace_callback("#<\s*img.*?src\s*=\s*[\"']([^\"]*)[\"'].*?/\s*>#", 
-			create_function('$matches', "return '<img src=\"'.img_proxy(\$matches[1], '{$value['url']}', 9999, 590).'\"/>';"), $each_paragraph);
-		$value['content'] .= "<p>".trim($each_paragraph)."</p>";
+//		$each_paragraph = preg_replace("#[\r\n\s]+#s", " ", $each_paragraph);
+//		$each_paragraph = preg_replace_callback("#<\s*img.*?real_src\s*=\s*[\"']([^\"]*)[\"'].*?/\s*>#", 
+//			create_function('$matches', "return '<img src=\"'.img_proxy(\$matches[1], '{$value['url']}', 9999, 590).'\"/>';"), $each_paragraph);
+//		$each_paragraph = preg_replace_callback("#<\s*img.*?src\s*=\s*[\"']([^\"]*)[\"'].*?/\s*>#", 
+//			create_function('$matches', "return '<img src=\"'.img_proxy(\$matches[1], '{$value['url']}', 9999, 590).'\"/>';"), $each_paragraph);
+		$value['content'] .= trim($each_paragraph);
 	}
+	empty($value['content']) && $value['content'] = $article['content'];
 }
+
+$wiki = get_wiki_content($poi['name']);
 
 $_TPL['title'] = $name;
 require template();

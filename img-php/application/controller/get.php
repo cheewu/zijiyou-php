@@ -1,12 +1,21 @@
 <?php
 class get extends controller {
 	
+	public $etag = 'zijiyou';
+	
 	public function pic($type, $id) {
 		global $_SC, $_SGLOBAL;
+		$etag = isset($_SERVER['HTTP_IF_NONE_MATCH']) ? $_SERVER['HTTP_IF_NONE_MATCH'] : "";
 		$dirname = $_SC['img_dir'].strtolower($type).DIRECTORY_SEPARATOR;
 		$filename = $id."_1.png";
 		if(is_file($dirname.$filename)) {
+			if($this->etag == $etag) {
+				header('Etag:'.$etag, true, 304); 
+			} else {
+				header('Etag:'.$this->etag); 
+			}
 			header("Content-Type: image/png");
+			header("Last-Modified: " . gmdate("D, d M Y 00:00:00", time()) . " GMT");
 			echo file_get_contents($dirname.$filename);
 		} else {
 			$func = (strtolower($type) == 'region') ? 'Region' : 'POI';
@@ -20,6 +29,8 @@ class get extends controller {
 			$url = flicker_photo_url($pic[0], 'q');
 			if($this->_cache($type, $id, $url)) {
 				header("Content-Type: image/png");
+				header('Etag:'.$this->etag); 
+				header("Last-Modified: " . gmdate("D, d M Y 00:00:00", time()) . " GMT");
 				echo file_get_contents($dirname.$filename);
 				exit;
 			}

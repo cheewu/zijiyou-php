@@ -5,7 +5,7 @@ $pg = @$_GET['pg'] ?: 1;
 $region = $_SGLOBAL['db']->Region_select_one(array('_id' => new MongoID($region_id)));
 
 $solr_query = array(
-	'solr_type' => 'fullsearch',
+	'solr_type' => 'region',
 	'query_words' => $region['name'],
 );
 
@@ -23,9 +23,9 @@ foreach($solr_res AS $key => &$value) {
 //	$value['content'] = strip_tags($value['content']);
 	$value['keyword'] = get_article_keywords($value['_id'], 'tpl_article_keyword_format');
 	$value['content'] = preg_replace_callback("#<\s*img.*?real_src\s*=\s*[\"']([^\"]*)[\"'].*?/\s*>#", 
-		create_function('$matches', "return '<img src=\"'.img_proxy(\$matches[1], '{$value['url']}', 9999, 590).'\"/>';"), $value['content']);
+		create_function('$matches', "return '<img src=\"'.img_proxy(\$matches[1], '{$value['url']}', 0, 590).'\"/>';"), $value['content']);
 	$value['content'] = preg_replace_callback("#<\s*img.*?src\s*=\s*[\"']([^\"]*)[\"'].*?/\s*>#", 
-		create_function('$matches', "return '<img src=\"'.img_proxy(\$matches[1], '{$value['url']}', 9999, 590).'\"/>';"), $value['content']);
+		create_function('$matches', "return '<img src=\"'.img_proxy(\$matches[1], '{$value['url']}', 0, 590).'\"/>';"), $value['content']);
 }
 
 $_TPL['title'] = $region['name'].'游记';

@@ -1,13 +1,14 @@
 <?php include 'header.tpl.php';?>
 <div id="middle">
 	<div class="classify">
-		<?=crumbs(array($region['name']))?>
+		<?=crumbs($region_id)?>
 	</div>
 	<div id="middle_left">
 		<div class="travel">
 			<div class="headline"><?=$region['name']?></div>
 			<div class="shoucang"><a href="#">＋收藏</a></div>
-			<div class="Time">当前时间：<?=date("Y-m-d H:i:s", time() + (intval($region['timezone']) - 8) * 3600)?>     <?php // 温度：19℃～25℃ ?></div>
+			<?php $time_zone = isset($region['timezone']) ? $region['timezone'] : 8?>
+			<div class="Time">当前时间：<?=date("Y-m-d H:i:s", time() + (intval($time_zone) - 8) * 3600)?>     <?php // 温度：19℃～25℃ ?></div>
 		<?php 
 			if(!empty($region['img_url'])) {
 				echo <<<HTML
@@ -122,7 +123,6 @@ HTML;
 			</div>
 HTML;
 }
-				
 ?>
 		</div>
 	</div>

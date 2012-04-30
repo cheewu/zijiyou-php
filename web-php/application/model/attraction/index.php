@@ -14,7 +14,9 @@ if(empty($region)) {
 
 $query = array('regionId' => $region['_id']);
 
-$radius > 0 && !empty($region['center']) && $query['center']['$within']['$center'] = array($region['center'], intval($radius));
+if($radius > 0 && !empty($region['center'])) {
+	$query['center']['$within']['$center'] = array($region['center'], intval($radius));
+}
 
 $sub_pois = $_SGLOBAL['db']->POI_select($query, null, array('rank' => -1), $ps, $pg);
 

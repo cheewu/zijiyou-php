@@ -6,7 +6,8 @@ $pg = @$_GET['pg'] ?: 1;
 
 $region = $_SGLOBAL['db']->Region_select_one(array('_id' => new MongoID($region_id)));
 
-!isset($region['timezone']) && $region['timezone'] = 8;
+empty($region['timezone']) && $region['timezone'] = 8;
+!empty($region['timezone']) && $region['timezone'] !== 0 && $region['timezone'] = 8;
 
 if(empty($region)) {
 	shttp_redirect("/");

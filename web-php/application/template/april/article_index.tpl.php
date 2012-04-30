@@ -1,7 +1,7 @@
 <?php include 'header.tpl.php';?>
 <div id="middle">
 	<div class="classify">
-		<?=crumbs(array($region['name']))?>
+		<?=crumbs($region_id)?>
 	</div>
 	<div id="middle_left">
 <?php 
@@ -67,11 +67,10 @@ HTML;
 				<li><A href="/map/<?=$poi['regionId']?>">地图</A></li>
 			</ul>
 		</Div>
-
-		<div class="youji_ss"><input name="wenben" type="text" class="Search_label" value="搜索标签" /><input name="ss" class="anniu" type="image" src="<?=T?>/images/ss.jpg" /></div>
 <?php 
 if(0) {
 ?>
+		<div class="youji_ss"><input name="wenben" type="text" class="Search_label" value="搜索标签" /><input name="ss" class="anniu" type="image" src="<?=T?>/images/ss.jpg" /></div>
 		<Div class="aside aside_text">
 			<ul>
 				<li><A href="#">烤鸭</A></li>
@@ -90,7 +89,7 @@ if(0) {
 				<li><A href="#">住宿</A></li>
 			</ul>
 		</Div>
-<?php }?>
+
 		<Div class="aside aside_text">
 			<ul>
 				<li><A href="#">最近三个月</A></li>
@@ -99,6 +98,7 @@ if(0) {
 				<li><A href="#">一年之前</A></li>
 			</ul>
 		</Div>
+<?php }?>
 	</div>
 </div>
 <?php include 'footer.tpl.php';?>

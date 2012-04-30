@@ -1,7 +1,7 @@
 <?php include 'header.tpl.php';?>
 <div id="middle">
 	<div class="classify">
-		<?=crumbs(array($region['name'], strval($region['_id'])))?>
+		<?=crumbs($region_id)?>
 	</div>
 	<div id="center">
 		<div id="map_area" class="ditu" style="width:860px;height:415px"></div>

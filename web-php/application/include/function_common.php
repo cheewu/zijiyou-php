@@ -3,15 +3,39 @@
 /**
  * generate curmbs
  */
-function crumbs() {
-	$param = func_get_args();
+function crumbs($region_id = "", $poi_id = "", $append = "") {
+	global $_SGLOBAL;
 	$curmbs = array(
 		'<a href="#">首页</a>',
 		'<a href="#">目的地指南</a>'
 	);
-	foreach ($param AS $item) {
-		empty($item[1]) && $item[1] = '#';
-		$curmbs[] = '<a href="'.$item[1].'">'.$item[0].'</a>';
+	if(!empty($region_id)) {
+		$region = $_SGLOBAL['db']->Region_select_one(array('_id' => new MongoID($region_id)));
+		$father_region = $_SGLOBAL['db']->Region_select_one(array('name' => $region['area']));
+		if(!empty($father_region)) {
+			$father_region_id = strval($father_region['_id']);
+			if(in_array($region['category'], array('province', 'country'))) {
+				$curmbs[] = "<a href='#'>{$region['area']}</a>";
+				$curmbs[] = "<a href='#'>{$region['name']}</a>";
+			} else {
+				!empty($father_region['area']) && $curmbs[] = "<a href='#'>{$father_region['area']}</a>";
+				$curmbs[] = "<a href='/state/$father_region_id'>{$father_region['name']}</a>";
+				$curmbs[] = "<a href='/region/$region_id'>{$region['name']}</a>";
+			}
+		} else {
+			!empty($region['area']) && $curmbs[] = "<a href='#'>{$region['area']}</a>";
+			$curmbs[] = "<a href='/region/$region_id'>{$region['name']}</a>";
+		}
+	}
+	if(!empty($poi_id)) {
+		$poi = $_SGLOBAL['db']->POI_select_one(array('_id' => new MongoID($poi_id)));
+		$curmbs[] = "<a href='/poi/$poi_id'>{$poi['name']}</a>";
+	}
+	if(!empty($append)) {
+		!is_array($append) && $append = array($append);
+		foreach($append AS $value) {
+			$curmbs[] = "<a href='#'>$value</a>";
+		}
 	}
 	return implode("&nbsp;&gt;&nbsp;", $curmbs);
 }
@@ -33,6 +57,15 @@ function img_cache($url, $weight, $height) {
 function get_poi_pic($id) {
 	global $_SC;
 	return $_SC['img_bed'].'poi'.DIRECTORY_SEPARATOR.$id.'.png';
+}
+
+/**
+ * get region pic
+ * @param string $id
+ */
+function get_region_pic($id) {
+	global $_SC;
+	return $_SC['img_bed'].'region'.DIRECTORY_SEPARATOR.$id.'.png';
 }
 
 /**
@@ -194,13 +227,16 @@ function dis_format($dis){
  * @param string $basic_url
  * @return string
  */
-function generate_url($extra_param = array(), $basic_url = "") {
+function generate_url($extra_param = array(), $extra_param_only = false, $basic_url = "") {
 	$default_param = array();
 	$parser = parse_url($_SERVER['REQUEST_URI']);
 	!empty($parser['query']) && parse_str($parser['query'], $default_param);
 	empty($basic_url) && $basic_url = "http://".$_SERVER['HTTP_HOST'].$parser['path'];
-	$param = array_merge($default_param, $extra_param);
-	return $basic_url.'?'.http_build_query($param);
+	$param = $extra_param_only ? $extra_param : array_merge($default_param, $extra_param);
+	$param = array_filter($param, create_function('$var', 'return !is_null($var);'));
+	$basic_url = rtrim($basic_url, DIRECTORY_SEPARATOR).DIRECTORY_SEPARATOR;
+	!empty($param) && $basic_url .= '?'.http_build_query($param);
+	return $basic_url;
 }
 
 /**
