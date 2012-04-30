@@ -87,9 +87,10 @@ foreach($solr_res AS $article) {
 	$article['content'] = preg_replace("#\s#", '', $article['content']);
 	$article['content'] = preg_replace("#-{10,}#", '', $article['content']);
 	$article_body = tpl_article_substr($article['content'], 300);
+	$article_id = strval($article['_id']);
 	echo <<<HTML
 			<div class="Inform">
-				<h1>$title</h1>
+				<a href="/detail/$region_id/$article_id" target="_blank"><h1>$title</h1></a>
 				<div class="display">$article_body</div>
 HTML;
 		
