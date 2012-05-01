@@ -37,5 +37,7 @@ foreach($solr_res AS $key => &$value) {
 }
 /* solr */
 
+$_TPL['title'] = $region['name'];
+
 include template();
 

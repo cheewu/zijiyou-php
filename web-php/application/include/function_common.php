@@ -11,7 +11,7 @@ function crumbs($region_id = "", $poi_id = "", $append = "") {
 	);
 	if(!empty($region_id)) {
 		$region = $_SGLOBAL['db']->Region_select_one(array('_id' => new MongoID($region_id)));
-		$father_region = $_SGLOBAL['db']->Region_select_one(array('name' => $region['area']));
+		$father_region = !empty($region['area']) ? $_SGLOBAL['db']->Region_select_one(array('name' => $region['area'])) : "";
 		if(!empty($father_region)) {
 			$father_region_id = strval($father_region['_id']);
 			if(in_array($region['category'], array('province', 'country'))) {
