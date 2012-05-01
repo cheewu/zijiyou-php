@@ -2,7 +2,7 @@
  * 
  */
 $(document).ready(function() {
-	$("#query").autocomplete("/ajax/relate/", {
+	$("#query,#query2").autocomplete("/ajax/relate/", {
 		minchars: 1,
 		max: 9,
 		delay: 0,

@@ -25,10 +25,13 @@ function fr_init()
 	//预包含application文件
 	_fr_pre_include_application();
 	
-	if(empty($_GET['_path']) && strpos($_SERVER['PHP_SELF'], "=")){
-		$_GET['_path'] = substr($_SERVER['PHP_SELF'], strpos($_SERVER['PHP_SELF'], "=") + 1);
-	} else {
-		$_GET['_path'] = "";
+	
+	if(!preg_match("#nginx#i", $_SERVER['SERVER_SOFTWARE'])) {
+		if(empty($_GET['_path']) && strpos($_SERVER['PHP_SELF'], "=")){
+			$_GET['_path'] = substr($_SERVER['PHP_SELF'], strpos($_SERVER['PHP_SELF'], "=") + 1);
+		} else {
+			$_GET['_path'] = "";
+		}
 	}
 	
 	/* URL路由 */

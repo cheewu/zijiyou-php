@@ -34,7 +34,7 @@ $subway_nearby = $_SGLOBAL['db']->POI_geo_query($poi['center'], null, 10, $query
 $solr_query = array(
 	'solr_type' => 'attraction',
 	'query_words' => $name,
-	'ps' => 3,
+	'ps' => 5,
 );
 
 $_SGLOBAL['solr']->parse_request($solr_query);
