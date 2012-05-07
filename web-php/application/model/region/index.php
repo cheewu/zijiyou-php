@@ -6,6 +6,15 @@ $pg = @$_GET['pg'] ?: 1;
 
 $region = $_SGLOBAL['db']->Region_select_one(array('_id' => new MongoID($region_id)));
 
+$region['images'] = array();
+
+for ($i = 1; $i <= 4; $i++) {
+	$filename = $region['name'].'_'.$i.'.jpg';
+	if(is_file(ROOT.'destination/'.$filename)) {
+		$region['images'][] = "/destination/".$filename;
+	}
+}
+
 empty($region['timezone']) && $region['timezone'] = 8;
 !empty($region['timezone']) && $region['timezone'] !== 0 && $region['timezone'] = 8;
 

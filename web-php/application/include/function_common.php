@@ -321,3 +321,40 @@ HTML;
 	return '<table style="width:300px;table-layout:fixed;">'.$content.'</table>';
 }
 
+/**
+ * get region geo content
+ * @param array $poi
+ * @return array
+ */
+function tpl_get_region_geo_content(&$region){
+	// init
+	$content = '';
+	// get wiki
+	$wiki = get_wiki_content($region['name']);
+	$region_id = strval($region['_id']);
+	$region['wiki'] = trim($wiki['content']);
+	// 取三个类别
+	foreach(array('name' => '名称', 'wiki' => '描述') AS $key => $val){
+		if(!empty($region[$key])){
+			$tmp = utf8_substr_ifneeed(trim(strip_tags($region[$key])), 150);
+			if($key == 'name'){
+				$tmp = '<a href="/region/'.$region_id.'" target="_blank">'.$tmp.'</a>';
+			}
+			if($key == 'wiki' && !empty($tmp) && !empty($region_id)){
+				$tmp = $tmp.'<a style="color:#5392CB; padding-left:5px;" href="/wiki/'.$region_id.'/'.strval($wiki['_id']).'" target="_blank">更多</a>';
+			}
+			$content .= <<<HTML
+			<tr>
+				<td style="font-weight:bold;vertical-align:top;width:15%;">
+					$val:&nbsp;
+				</td>
+				<td style="width:85%;">
+					$tmp
+				</td>
+			</tr>
+HTML;
+		}
+	}
+	return '<table style="width:300px;table-layout:fixed;">'.$content.'</table>';
+}
+

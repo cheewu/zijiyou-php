@@ -33,7 +33,9 @@
 		</div>
 		<div class="travel">
 			<div class="travel_Title"><?=$poi['name']?>游记</div>
-<?php 
+			
+<?php
+/* 
 foreach($solr_res AS $article) {
 	$author = @$article['author'] ?: "";
 	$title = @$article['title']['str'] ?: "";
@@ -72,6 +74,51 @@ HTML;
 HTML;
 	}
 		echo <<<HTML
+			</div>
+HTML;
+}
+*/
+foreach($solr_res AS $article_index => $article) {
+	$author = @$article['author'] ?: "";
+	$title = @$article['title']['str'] ?: "";
+	$article['content'] = strip_tags($article['content']);
+//	$article['content'] = preg_replace("#\s#", '', $article['content']);
+//	$article['content'] = preg_replace("#[\-=]{10,}#", '', $article['content']);
+	$article_id = $article['_id'];
+	$contents = utf8_substr_ifneeed($article['content'], 300, false, '...');
+	echo <<<HTML
+			<div class="Inform">
+				<a href="/fragement/$region_id/$article_id" target="_blank"><h1>$title</h1></a>
+HTML;
+	$image_count = count($article['images']);
+	$lines = intval($image_count / 3);
+	$lines > 3 && $lines = 3;
+	if($lines > 0) {
+		foreach($article['images'] AS $index => $img) {
+			$current_line = intval($index / 3) + 1;
+			if($current_line > $lines) {break;}
+			$class = ($index % 3 == 0) ? "wuno" : "";
+			$img = img_proxy($img, $article['url'], 205, 110);
+			echo <<<HTML
+				<h3 class="$class arti_{$article_index}_{$current_line}">
+					<img src="{$img}" line="$current_line" width="205" height="110" onerror="$('.arti_{$article_index}_{$current_line}').css('display', 'none');"/>
+				</h3>
+HTML;
+		}
+	}
+	echo <<<HTML
+				<br />
+				{$contents}
+HTML;
+	$keywords = implode("&nbsp;&nbsp;&nbsp;", $article['keyword']);
+	if(!empty($keywords)) { 
+		echo <<<HTML
+				<div class="labelwz">
+					$keywords
+				</div>
+HTML;
+	}
+	echo <<<HTML
 			</div>
 HTML;
 }
@@ -129,11 +176,11 @@ HTML;
 			</div>
 		</div>
 <?php }?>
-		<div class="page">
+	</div>
+	<div class="page">
 			<a href="<?=($pg > 1 && $total_res_cnt > 1) ? generate_url(array('pg' => $pg - 1)) : '#'?>">上一页</a> 
 			<a href="<?=($pg < $total_res_cnt) ? generate_url(array('pg' => $pg + 1)) : '#'?>">下一页</a>
 		</div>
-	</div>
 </div>
 <?php include 'footer.tpl.php';?>
 

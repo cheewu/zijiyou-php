@@ -8,6 +8,24 @@ $region = $_SGLOBAL['db']->Region_select_one(array('_id' => new MongoID($region_
 
 $sub_region = $_SGLOBAL['db']->Region_select(array('area' => $region['name']));
 
+$sub_region_geo = array();
+
+foreach($sub_region AS $index => $value){
+	if($index > 6) { break; }
+	$id = (string)$value['_id'];
+	//筛选有坐标点的poi
+	if(empty($value['center'][0]) && empty($value['center'][1])){continue;}
+	//筛选只有中文的poi
+	if(mb_strlen($value['name'], 'utf-8') == strlen($value['name'])){continue;}
+	/* 处理google地图信息 */
+	$sub_region_geo[$id] = array(
+		'position' => array('lt' => $value['center'][0], 'lg' => $value['center'][1]),
+		'title' => $value['name'],
+		'content' => tpl_get_region_geo_content($value),
+	); 
+	/* 处理google地图信息 end*/
+}
+
 $sub_poi = $_SGLOBAL['db']->POI_select(array('regionId' => $region['_id']), null, array('rank', -1));
 
 $geo = (!empty($region['center']) && (!empty($region['center'][0]) || !empty($region['center'][1]))) 

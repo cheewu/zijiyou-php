@@ -10,11 +10,27 @@
 			<?php $time_zone = isset($region['timezone']) ? $region['timezone'] : 8?>
 			<div class="Time">当前时间：<?=date("Y-m-d H:i:s", time() + (intval($time_zone) - 8) * 3600)?>     <?php // 温度：19℃～25℃ ?></div>
 		<?php 
-			if(!empty($region['img_url'])) {
+		if(!empty($region['images'])) {
+			echo <<<HTML
+			<script>$('.carousel').carousel({interval:0});</script>
+			<div id="myCarousel" class="destination_tu carousel slide">
+				<div class="carousel-inner">
+HTML;
+			foreach($region['images'] AS $index => $img) {	
+				$class = !$index ? "active" : "";
 				echo <<<HTML
-			<div class="destination_tu"><img src="{$region['img_url']}" width="640" height="240" /></div>
+					<div class="item $class">
+						<img src="$img" width="640" height="300"/>
+					</div>
 HTML;
 			}
+			echo <<<HTML
+				</div>
+				<a class="carousel-control left" href="#myCarousel" data-slide="prev">&lsaquo;</a>
+  				<a class="carousel-control right" href="#myCarousel" data-slide="next">&rsaquo;</a>
+			</div>
+HTML;
+		}
 		?>
 			<div class="Introduction"><?=$wiki_substr?><A style='color:#5392CB; padding-left:5px;' href="/wiki/<?=$region_id?>/<?=strval($wiki['_id'])?>" target="_blank">更多</A></div>
 		<?php 

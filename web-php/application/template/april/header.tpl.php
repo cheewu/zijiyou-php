@@ -5,7 +5,7 @@
 		<title><?=$_TPL['title']?></title>
 		<link href="<?=T?>/style/css.css" rel="stylesheet" type="text/css" />
 		<script type="text/javascript">var T = '<?=T?>';</script>
-		<script type="text/javascript" src="<?=T?>/javascript/jquery-1.4.4.min.js" ></script>
+		<script type="text/javascript" src="<?=T?>/javascript/jquery-1.7.2.min.js" ></script>
 		<!--common-->
 		<script type="text/javascript" src="<?=T?>/javascript/common.js" ></script>
 		<!--common-->
@@ -18,6 +18,10 @@
 		<link href="<?=T?>/style/autocomplete.css" rel="stylesheet" type="text/css" />
 		<script type="text/javascript" src="<?=T?>/javascript/autocomplete.js"></script>
 		<!--autocomplete-->
+		<!--scroll-->
+		<link href="<?=T?>/style/scroll.css" rel="stylesheet" type="text/css" />
+		<script type="text/javascript" src="<?=T?>/javascript/scroll.js"></script>
+		<!--scroll-->
 	</head>
 
 	<body>

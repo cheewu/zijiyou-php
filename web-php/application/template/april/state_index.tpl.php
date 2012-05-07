@@ -15,17 +15,20 @@
 			<script type="text/javascript" src="http://ditu.google.cn/maps/api/js?sensor=false"></script>
 			<script type="text/javascript" src="<?=T?>/javascript/map.js" ></script>
 			<script type="text/javascript">
+			var sub_region_geo = <?=json_encode($sub_region_geo)?>;
+			</script>
+			<script type="text/javascript">
 			var mapOptions = {
 				id: 'map_area',
 				set: {
-					rotateControl: false,
-					streetViewControl: false,
-					scrollwheel: false, 
-					panControl: false, 
-					zoomControl: false, 
-					scaleControl: false, 
-					overviewMapControl: false,
-					mapTypeControl: false,
+					rotateControl: true,
+					streetViewControl: true,
+					scrollwheel: true, 
+					panControl: true, 
+					zoomControl: true, 
+					scaleControl: true, 
+					overviewMapControl: true,
+					mapTypeControl: true,
 					zoom: <?=isset($region['map_zoom']) ? $region['map_zoom'] : $map_zoom?>
 				}
 			}
@@ -37,6 +40,13 @@
 				}
 			}
 			draw_marker(markerOptions, {display:false});
+
+			var count = 0;
+			$.each(sub_region_geo, function(id, set){
+				set.iconUrl = googleMapIcon(count++);
+				set.shadowUrl = new google.maps.MarkerImage(googleMapIconShadow(), null, null,  new google.maps.Point(10,34));
+				draw_marker({id:id,set:set}, {setCenter:false});
+			});
 			</script>
 		</div>
 		<div class="travel">
@@ -96,10 +106,16 @@ HTML;
 			$item_id = strval($item['_id']);
 			$img = get_region_pic($item_id);
 			$item_name = utf8_substr_ifneeed($item['name'], 20, false, '...');
+			$google_icon = google_map_icon_url($index);
 			echo <<<HTML
 				<ol>
 					<dt><img src="$img" width="60" height="60" /></dt>
-					<dd><a href="/region/$item_id">$item_name</a></dd>
+					<dd>
+						<a href="#map_area" onclick="javascipt:setMarkerCenter('$item_id');">
+							<img src="$google_icon" width="10" height="18" />
+						</a>
+						<a href="/region/$item_id">$item_name</a>
+					</dd>
 				</ol>		
 HTML;
 		}
@@ -108,6 +124,7 @@ HTML;
 ?>
 			</div>
 		</div>
+<?php /*?>
 		<div class="offside">
 			<h1><?=$region['name']?>热门景点......（ <a href="＃">全部 </a>）</h1>
 			<div class="hot">
@@ -129,6 +146,7 @@ HTML;
 ?>			
 			</div>
 		</div>
+<?php */?>
 	</div>
 </div>
 
