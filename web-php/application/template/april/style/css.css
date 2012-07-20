@@ -21,7 +21,7 @@ h1,h2,h3,h4,h5,h6{ font-size:14px; font-weight:normal;}
 .classify{ width:900px; float:left; margin-top:8px; color:#666666;}
 .classify a{ color:#666666;}
 #middle_left{ width:680px; float:left; }
-.travel{ width:640px; float:left; background:#FFFFFF; margin-top:10px; padding:10px 20px 20px 20px;}
+.travel{ width:640px; float:left; background:#FFFFFF; margin-top:10px; padding:10px 20px 20px 20px; word-break:break-all;}
 .insets{ float:left;}
 .headline{ float:left; margin-top:8px; font-size:28px; }
 .shoucang{ float:left; text-align:center; width:65px; height:25px; margin-top:5px; margin-left:10px; background:#abb8c4; line-height:25px; }
@@ -90,8 +90,8 @@ h1,h2,h3,h4,h5,h6{ font-size:14px; font-weight:normal;}
 .jd_content .miaoshu{ margin-top:10px; }
 .jd_nr{ width:360px; float:left; margin-left:20px;  margin-bottom:10px;}
 .jd_nr a{ color:#5392cb; text-decoration:underline;}
-.jd_nr h5{ width:360px; float:left; margin-top:3px; font-size:12px;}
-.jd_img{ width:250px; float:left;}
+.jd_nr h5{ width:460px; float:left; margin-top:3px; font-size:12px;}
+.jd_img{ width:150px; float:left;}
 .jdpoi{ width:640px; float:left; margin-top:15px;}
 .jd_img ul li{ float:left; list-style:none; margin-right:10px; margin-top:10px;}
 .jd_img ul img{ border:none;  float:left;}
@@ -137,3 +137,20 @@ h1,h2,h3,h4,h5,h6{ font-size:14px; font-weight:normal;}
 .wiki_text{ float:left; width:640px; margin-top:30px; }
 .writings span{ line-height:46px; padding-left:10px;}
 .Hide{ width:640px; float:left;}
+
+
+/* index */
+.home_maps { width:900px; float:left; margin-top:10px;}
+.article_Title { width:640px; float:left;}
+.article_Title h1{ font-size:12px; color:#5392cb;}
+.article-bd{ width:640px; float:left;}
+.island-part{ width:220px; float:left; margin-top:8px;}
+.article-tu{ width:220px; float:left;}
+.island-ti{ width:220px;  float:left; margin-top:8px;}
+.island-ti a{ color:#5392cb;}
+.island-wz{ width:220px; float:left; margin-top:5px; line-height:18px;}
+.part-item{ width:420px; float:left; margin-top:5px;}
+.part-item ol { width:120px; float:left; padding-left:20px;}
+.part-item ol dt{ width:120px; float:left;}
+.part-item ol dd{ text-align:center; line-height:28px; float:left; width:120px;}
+.part-item ol dd a{ color:#5392cb;}

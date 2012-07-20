@@ -17,14 +17,15 @@ $_SCONFIG['router'] = array(
 	 *   	target: /index/2134/ -> /index/list/?list_id=2134
 	 *   	router: array("/^\/index\/(\d+)\/?/i", "/index/list/?list_id=${1}", 'break'),
 	 */
-	array('#/?state/(\w{24})/?#', '/state/?region_id=${1}', 'break'),
-	array('#/?region/(\w{24})/?#', '/region/?region_id=${1}', 'break'),
-	array('#/?poi/(\w{24})/?#', '/poi/?poi_id=${1}', 'break'),
-	array('#/?attraction/(\w{24})/?#', '/attraction/?region_id=${1}', 'break'),
-	array('#/?article/(\w{24})/?#', '/article/?region_id=${1}', 'break'),
-	array('#/?map/(\w{24})/?#', '/map/?region_id=${1}', 'break'),
-	array('#/?detail/(\w{24})/(\w{24})/?#', '/article/detail/?region_id=${1}&article_id=${2}', 'break'),
-	array('#/?fragement/(\w{24})/(\w{24})/?#', '/article/fragement/?region_id=${1}&fragement_id=${2}', 'break'),
-	array('#/?wiki/(\w{24})/(\w+)/?#', '/wiki/?region_id=${1}&wiki_id=${2}', 'break'),
+	array('#^/?state/(\w{24})/?#', '/state/?region_id=${1}', 'break'),
+	array('#^/?region/(\w{24})/?#', '/region/?region_id=${1}', 'break'),
+	array('#^/?poi/(\w{24})/?#', '/poi/?poi_id=${1}', 'break'),
+	array('#^/?attraction/(\w{24})/?#', '/attraction/?region_id=${1}', 'break'),
+	array('#^/?article/(\w{24})/?#', '/article/?region_id=${1}', 'break'),
+	array('#^/?map/(\w{24})/?#', '/map/?region_id=${1}', 'break'),
+	array('#^/?detail/(\w{24})/(\w{24})/?#', '/article/detail/?region_id=${1}&article_id=${2}', 'break'),
+	array('#^/?fragement/(\w{24})/(\w{24})/?#', '/article/fragement/?region_id=${1}&fragement_id=${2}', 'break'),
+	array('#^/?wiki/(\w{24})/(\w+)/?#', '/wiki/?region_id=${1}&wiki_id=${2}', 'break'),
+	array('#^/?ajax/region/(\w{24}).json#', '/ajax/region/${1}', 'break'),
 );
 /* /router */

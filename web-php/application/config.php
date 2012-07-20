@@ -17,7 +17,7 @@ $_SC['MongoDB'] = array(
 
 // memcached
 $_SC['memcached'] = array(
-    array('127.0.0.1', 11211),//host, port, weight
+    array('202.85.213.54', 11211),//host, port, weight
 );
 
 // flicker
@@ -60,5 +60,12 @@ $_SC['img_proxy_url'] = "http://img.zijiyou.com/get.php";
 // img zijiyou
 $_SC['img_bed'] = "http://img.zijiyou.com/";
 
+// upaiyun
+$_SC['upaiyun_domain'] = "http://regionpoipic.b0.upaiyun.com/";
+
 // img cache prefix
 $_SC['img_cache_prefix'] = "pic_cache_";
+
+$_SC['article_img_dir'] = '/sdb2/article/';
+
+$_SC['googleImages_dir'] = '/sdb2/googleImages/';

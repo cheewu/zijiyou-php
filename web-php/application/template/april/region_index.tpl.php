@@ -26,8 +26,23 @@ HTML;
 			}
 			echo <<<HTML
 				</div>
-				<a class="carousel-control left" href="#myCarousel" data-slide="prev">&lsaquo;</a>
-  				<a class="carousel-control right" href="#myCarousel" data-slide="next">&rsaquo;</a>
+				<div class="carousel-control-wrapper wrapper"></div>
+				<div class="carousel-control-wrapper">
+HTML;
+		foreach($region['images'] AS $index => $img) {	
+				$class = !$index ? "select" : "";
+				echo <<<HTML
+					<a class="chooser $class" onclick="$('.carousel').carousel($index); $('.carousel').carousel('pause');"></a>
+HTML;
+			}
+				echo <<<HTML
+				<script type="text/javascript">
+					$('.chooser').click(function(){
+						$('.chooser').removeClass('select');
+						$(this).addClass('select');
+					});
+				</script>
+				</div>
 			</div>
 HTML;
 		}
@@ -52,7 +67,14 @@ HTML;
 		}
 		?>
 		</div>
-	
+<?php if(!empty($correlation['correlation'])) { ?>
+		<style>.bubble-text:hover {cursor:pointer;}</style>
+		<div id="chart" class="gallery travel" style="height:430px;"></div>
+		<script type="text/javascript"> 
+		init_bubble("#chart", "<?=strval($region['_id'])?>");
+		</script>
+<?php }?>
+<?php if (!empty($sub_pois)) {?>	
 		<div class="travel">
 			<div class="travel_Title"><?=$name?>景点</div>
 			<div class="jingdian">
@@ -60,7 +82,7 @@ HTML;
 	foreach($sub_pois AS $index => $poi) {
 		$poi_name = utf8_substr_ifneeed($poi['name'], 10, 0, '');
 		$poi_id = (string)$poi['_id'];
-		$img = get_poi_pic(strval($poi['_id']));
+		$img = tpl_get_google_poi_region_img(strval($poi['_id']), 'poi', '90x90');
 		$class = (($index + 1) % 6 == 0) ? 'tu_jd' : '';
 		echo <<<HTML
 				<ol class="$class">
@@ -73,7 +95,8 @@ HTML;
 ?>
 			</div>
 		</div>
-<?php if(@$region['wikicategory']) {?>
+<?php } // end for sub pois?>
+<?php if(!empty($region['wikicategory']) && 0) {?>
 		<div class="travel">
 			<div class="travel_Title">北京相关的维基百科条目</div>
 <?php 
@@ -98,9 +121,10 @@ HTML;
 		<div class="travel">
 			<div class="travel_Title"><?=$region['name']?>游记</div>
 <?php 
-foreach($solr_res AS $article) {
+foreach($documents AS $article) {
 	$author = @$article['author'] ?: "";
 	$title = @$article['title'] ?: "";
+	empty($article['content']) && $article['content'] = "";
 	$article['content'] = preg_replace("#\s#", '', $article['content']);
 	$article['content'] = preg_replace("#-{10,}#", '', $article['content']);
 	$article_body = tpl_article_substr($article['content'], 300);
@@ -108,25 +132,12 @@ foreach($solr_res AS $article) {
 	echo <<<HTML
 			<div class="Inform">
 				<a href="/detail/$region_id/$article_id" target="_blank"><h1>$title</h1></a>
-				<div class="display">$article_body</div>
 HTML;
 		
-	if(count($article['images']) > 0) {
-		echo <<<HTML
-				<div class="youji_tu">
+	tpl_echo_article_image($article['pictures']);
+	echo <<<HTML
+				<div class="display">$article_body</div>
 HTML;
-		foreach($article['images'] AS $index => $img) {
-			if($index > 5) { break; }
-			$img = get_article_pic_by_index(strval($article['_id']), $index, 0, 48);
-			// width="71" 
-			echo <<<HTML
-					<h6><img src="$img" height="48" onerror="$(this).css('display', 'none');"/></h6>
-HTML;
-		}	
-		echo <<<HTML
-				</div>
-HTML;
-	}
 	$keywords = implode("&nbsp;&nbsp;&nbsp;", $article['keyword']);
 	if(!empty($keywords)) { 
 		echo <<<HTML

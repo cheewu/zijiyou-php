@@ -11,8 +11,9 @@
 			<?=$seelcted_fragement?>
 		</div>
 		<div class="right_return">
-			<h1><a href="/detail/<?=$region_id?>/<?=$fragement['articleId']?>">&gt;查看游记全文</a></h1>
+			<h1><a href="/detail/<?=$region_id?>/<?=$fragement['documentID']?>">&gt;查看游记全文</a></h1>
 			<h1><a href="<?=@$_SERVER['HTTP_REFERER'] ?: '#'?>">&gt;返回到<?=$region['name']?>攻略</a></h1>
+			<h1><a href="<?=@$fragement['url'] ?: '#'?>">&gt;原文链接</a></h1>
 		</div>
 	</div>
 </div>

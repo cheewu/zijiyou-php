@@ -6,8 +6,8 @@
 function crumbs($region_id = "", $poi_id = "", $append = "") {
 	global $_SGLOBAL;
 	$curmbs = array(
-		'<a href="#">首页</a>',
-		'<a href="#">目的地指南</a>'
+		'<a href="/">首页</a>',
+		'<a href="/">目的地指南</a>'
 	);
 	if(!empty($region_id)) {
 		$region = $_SGLOBAL['db']->Region_select_one(array('_id' => new MongoID($region_id)));
@@ -105,6 +105,38 @@ function img_proxy($url, $refer, $width, $height) {
         $_SGLOBAL['m']->set($key, $param);
     }
     return $_SC['img_bed'].'cache'.DIRECTORY_SEPARATOR.$md5."_{$width}x{$height}.png";
+}
+
+/**
+ * is article image exists
+ * @param string $url
+ * @return bool
+ */
+function is_article_image_exists($url) {
+    global $_SC;
+    //return true;
+    return is_file($_SC['article_img_dir'].md5($url));
+}
+
+/**
+ * get article image by url
+ * @param string $url
+ * @param int $width
+ * @param int $height
+ */
+function get_article_image($url, $width, $height) {
+    global $_SC, $_SGLOBAL;
+	$prefix = $_SC['img_cache_prefix'];
+    $md5 = md5($url);
+	$crc32 = base_convert(crc32($url), 10, 16);
+	$key = $prefix.$crc32;
+	$_SGLOBAL['m']->get($key);
+	//no found
+    if( $_SGLOBAL['m']->getResultCode() == Memcached::RES_NOTFOUND ) {
+        /* the key does not exist */
+        $_SGLOBAL['m']->set($key, $_SC['article_img_dir'].$md5);
+    }
+    return $_SC['img_bed'].'article/'.$crc32."_{$width}x{$height}.png";
 }
 
 /**
@@ -357,4 +389,81 @@ HTML;
 	}
 	return '<table style="width:300px;table-layout:fixed;">'.$content.'</table>';
 }
+
+/**
+ * trim white space char
+ * @param $string
+ * @return $string
+ */
+function tpl_trim($string) {
+    $string = @iconv("UTF-8", "UTF-8//IGNORE", $string);
+    $string = str_replace(chr(194).chr(160), " ", $string);
+    $string = str_replace("　", " ", $string);
+    $string = trim($string, "\t\n\0\r\x0B\x20");
+    return $string;
+}
+
+
+/**
+ * correct the img src
+ * @param string $html
+ * @param string $refer
+ */
+function tpl_src_cure($html, $width, $height) {
+    global $_tpl_src_cure_param;
+    $_tpl_src_cure_param = array($width, $height);
+    $html = preg_replace_callback("#<\s*img.*?real_src\s*=\s*[\"']([^\"]*)[\"'].*?/\s*>#", 
+               function ($matches) {
+                   return '<img src="'.trim($matches[1]).'"/>';
+               }, $html);
+    $html = preg_replace_callback("#<\s*img.*?src\s*=\s*[\"']([^\"]*)[\"'].*?/\s*>#", 
+               function ($matches) {
+                   global $_tpl_src_cure_param;
+                   return is_article_image_exists($matches[1]) ? 
+           		          '<img src="'.get_article_image($matches[1], 
+                                          $_tpl_src_cure_param[0], 
+                                          $_tpl_src_cure_param[1]).
+                   		  '" onerror=\'$(this).css("display", "none")\'/>' : '';
+               }, $html);
+    unset($_tpl_src_cure_param);
+    return $html;
+}
+
+/**
+ * get google iamge
+ * @param string $id
+ * @param string $type
+ * @return mix bool or string
+ */
+function tpl_get_google_poi_region_img($id, $type, $size) {
+    global $_SC, $_SGLOBAL;
+    $collection = (strtolower($type) == 'poi') ? 'POI' : 'Region';
+    $func = "{$collection}_select_one";
+    $res = $_SGLOBAL['db']->$func(array('_id' => new MongoID($id)), array('googleImages'));
+    if (empty($res['googleImages'])) { return false;}
+    $pic_arr = array();
+    foreach ($res['googleImages'] AS $googleImage) {
+        $pic_arr[$googleImage['imageId']] = $googleImage['width'] * $googleImage['height'];
+    }
+    arsort($pic_arr);
+    $pic_dirname = "";
+    foreach ($pic_arr AS $pic_id => $pic) {
+        $tmp_pic_dirname = $_SC['googleImages_dir'].$collection."/".$pic_id;
+        if (!is_file($tmp_pic_dirname)) { continue; }
+        $pic_dirname = $tmp_pic_dirname;
+        break;
+    }
+    if (empty($pic_dirname)) { return false; }
+    $image_stat = getimagesize($pic_dirname);
+    list(, $img_type) = explode('/', $image_stat['mime']);
+    return $_SC['upaiyun_domain'].$collection."/{$pic_id}.{$img_type}!{$size}";
+}
+
+
+
+
+
+
+
+
 

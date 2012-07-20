@@ -24,7 +24,7 @@ $_SC['flicker'] = array(
 	'auth_url'	 => 'http://flickr.com/services/auth/',
 );
 
-$_SC['img_dir'] = ROOT.'cache/';
+$_SC['article_img_dir'] = '/sdb2/articleResize/';
 
 //页面编码
 $_SC['page_charset'] = 'UTF-8';

@@ -26,5 +26,5 @@ function init_memcached() {
         die('connetct to memcached server failure, please check all memcached servers.');
     }
 
-    $_SGLOBAL['m'] = $m;
+    return $m;
 }

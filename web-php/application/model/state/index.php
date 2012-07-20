@@ -5,13 +5,31 @@ $region_id = @$_GET['region_id'] ?: '';
 $pg = @$_GET['pg'] ?: 1;
 
 $region = $_SGLOBAL['db']->Region_select_one(array('_id' => new MongoID($region_id)));
-
 $sub_region = $_SGLOBAL['db']->Region_select(array('area' => $region['name']));
+$region_correlation = $_SGLOBAL['pagedb']->correlation_select_one(array('name' => $region['name']));
+
+$sub_region_no_order = array();
+$sub_region_score = array();
+$sub_region_order = array();
+foreach ($sub_region AS $value) {
+	$id = strval($value['_id']);
+	$sub_region_no_order[$id] = $value;
+	$sub_region_score[$id] = @$region_correlation['correlation']['destination'][$value['name']] ?: 0; 
+}
+
+arsort($sub_region_score);
+foreach ($sub_region_score as $id => $score) {
+	$sub_region_order[] = $sub_region_no_order[$id];
+}
+
+$sub_region = $sub_region_order;
 
 $sub_region_geo = array();
 
+$sub_region_arr = array();
+
 foreach($sub_region AS $index => $value){
-	if($index > 6) { break; }
+	if(count($sub_region_geo) >= 6) { break; }
 	$id = (string)$value['_id'];
 	//筛选有坐标点的poi
 	if(empty($value['center'][0]) && empty($value['center'][1])){continue;}
@@ -23,8 +41,10 @@ foreach($sub_region AS $index => $value){
 		'title' => $value['name'],
 		'content' => tpl_get_region_geo_content($value),
 	); 
+	$sub_region_arr[] = $value;
 	/* 处理google地图信息 end*/
 }
+$sub_region = $sub_region_arr;
 
 $sub_poi = $_SGLOBAL['db']->POI_select(array('regionId' => $region['_id']), null, array('rank', -1));
 
@@ -35,7 +55,13 @@ $map_zoom = ($region['category'] == 'country') ? 4 : 5;
 			
 $wiki = get_wiki_content($region['name']);
 
-/* solr */
+list($documents) = tpl_article_search($region['name'], $region['name'], 1, 3);
+
+$_TPL['title'] = $region['name'];
+include template();
+return;
+
+/* solr 
 $solr_query = array(
 	'solr_type' => 'region',
 	'query_words' => $region['name'],
@@ -53,9 +79,4 @@ foreach($solr_res AS $key => &$value) {
 	$value['content'] = strip_tags($value['content']);
 	$value['keyword'] = get_article_keywords($value['_id'], 'tpl_article_keyword_format');
 }
-/* solr */
-
-$_TPL['title'] = $region['name'];
-
-include template();
-
+   solr */

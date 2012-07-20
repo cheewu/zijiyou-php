@@ -49,29 +49,39 @@
 			});
 			</script>
 		</div>
+<?php if(!empty($region_correlation['correlation'])) { ?>
+		<style>.bubble-text:hover {cursor:pointer;}</style>
+		<div id="chart" class="gallery travel" style="height:430px;"></div>
+		<script type="text/javascript"> 
+		init_bubble("#chart", "<?=strval($region['_id'])?>");
+		</script>
+<?php }?>
 		<div class="travel">
 			<div class="travel_Title"><?=$region['name']?>游记</div>
 			<?php 
-foreach($solr_res AS $article) {
+foreach($documents AS $article) {
 	$author = @$article['author'] ?: "";
 	$title = @$article['title'] ?: "";
-	$article['content'] = preg_replace("#\s#", '', $article['content']);
-	$article['content'] = preg_replace("#-{10,}#", '', $article['content']);
 	$article_body = tpl_article_substr($article['content'], 300);
-	$article_id = strval($article['_id']);
+	$article_id = strval($article['documentID']);
 	echo <<<HTML
 			<div class="Inform">
 				<a href="/detail/$region_id/$article_id" target="_blank"><h1>$title</h1></a>
+HTML;
+    tpl_echo_article_image($article['pictures']);
+	echo <<<HTML
 				<div class="display">$article_body</div>
 HTML;
-		
-	if(count($article['images']) > 0) {
+/*
+	if(count($article['pictures']) > 0) {
 		echo <<<HTML
 				<div class="youji_tu">
 HTML;
-		foreach($article['images'] AS $index => $img) {
-			if($index > 5) { break; }
-			$img = get_article_pic_by_index(strval($article['_id']), $index, 0, 48);
+        $count = 0;
+		foreach($article['pictures'] AS $index => $img) {
+		    if(!is_article_image_exists($img)) { continue; }
+		    if(++$count > 5) { break; }
+			$img = get_article_image($img, 0, 48);
 			// width="71" 
 			echo <<<HTML
 					<h6><img src="$img" height="48" onerror="$(this).css('display', 'none');"/></h6>
@@ -81,8 +91,9 @@ HTML;
 				</div>
 HTML;
 	}
-	$keywords = implode("&nbsp;&nbsp;&nbsp;", $article['keyword']);
+*/
 	if(!empty($keywords)) { 
+	    $keywords = implode("&nbsp;&nbsp;&nbsp;", $article['keyword']);
 		echo <<<HTML
 				<div class="labelwz">
 					$keywords
@@ -104,14 +115,14 @@ HTML;
 		foreach($sub_region AS $index => $item) {
 			if($index > 5) { break; }
 			$item_id = strval($item['_id']);
-			$img = get_region_pic($item_id);
+			$img = tpl_get_google_poi_region_img($item_id, 'region', '60x60');
 			$item_name = utf8_substr_ifneeed($item['name'], 20, false, '...');
 			$google_icon = google_map_icon_url($index);
 			echo <<<HTML
 				<ol>
 					<dt><img src="$img" width="60" height="60" /></dt>
 					<dd>
-						<a href="#map_area" onclick="javascipt:setMarkerCenter('$item_id');">
+						<a href="#map_area" onclick="setMarkerCenter('$item_id');">
 							<img src="$google_icon" width="10" height="18" />
 						</a>
 						<a href="/region/$item_id">$item_name</a>
@@ -124,7 +135,6 @@ HTML;
 ?>
 			</div>
 		</div>
-<?php /*?>
 		<div class="offside">
 			<h1><?=$region['name']?>热门景点......（ <a href="＃">全部 </a>）</h1>
 			<div class="hot">
@@ -132,7 +142,7 @@ HTML;
 		foreach($sub_poi AS $index => $item) {
 			if($index > 5) { break; }
 			$item_id = strval($item['_id']);
-			$img = get_poi_pic($item_id);
+			$img = tpl_get_google_poi_region_img($item_id, 'poi', '60x60');
 			$item_name = utf8_substr_ifneeed($item['name'], 20, false, '...');
 			echo <<<HTML
 				<ol>
@@ -146,7 +156,11 @@ HTML;
 ?>			
 			</div>
 		</div>
-<?php */?>
+	</div>
+	<div class="page">
+		<a href="/article/<?=$region_id?>" style="float:right;">更多游记</a>
+<!--		<a href="<?=($pg > 1 && $total_res_cnt > 1) ? generate_url(array('pg' => $pg - 1)) : '#'?>">上一页</a> -->
+<!--		<a href="<?=($pg < $total_res_cnt) ? generate_url(array('pg' => $pg + 1)) : '#'?>">下一页</a>-->
 	</div>
 </div>
 

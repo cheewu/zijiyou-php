@@ -41,7 +41,6 @@ $_SGLOBAL['flicker'] = new Flicker();
 $_SGLOBAL['solr'] = new Solr();
 // init title
 $_TPL['title'] = "";
-
 //CSS文件
 //tpl_include_ex_css('reset.css');//子css文件
 //tpl_include_ex_css('main.css');//子css文件

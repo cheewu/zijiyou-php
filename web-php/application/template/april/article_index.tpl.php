@@ -1,13 +1,14 @@
 <?php include 'header.tpl.php';?>
 <div id="middle">
 	<div class="classify">
-		<?=crumbs($region_id)?>
+		<?=crumbs($region_id, "", ($keyword == $region['name']) ? array() : array($keyword))?>
 	</div>
 	<div id="middle_left">
 <?php 
-foreach($solr_res AS $article_index => $article) {
+foreach($documents AS $article_index => $article) {
 	$author = @$article['author'] ?: "";
 	$title = @$article['title'] ?: "";
+	empty($article['content']) && $article['content'] = "";
 	$article['content'] = strip_tags($article['content']);
 	$article['content'] = preg_replace("#\s#", '', $article['content']);
 	$article['content'] = preg_replace("#[\-=]{10,}#", '', $article['content']);
@@ -19,6 +20,8 @@ foreach($solr_res AS $article_index => $article) {
 			<div class="basic">$author</div>
 			<h1><a href="/detail/$r_id/$a_id">$title</a></h1>
 HTML;
+    tpl_echo_article_image($article['pictures']);
+/*
 	$image_count = count($article['images']);
 	$lines = intval($image_count / 3);
 	$lines > 3 && $lines = 3;
@@ -35,12 +38,13 @@ HTML;
 HTML;
 		}
 	}
+*/
 	echo <<<HTML
 			<br />
 			{$contents}
 HTML;
-	$keywords = implode("&nbsp;&nbsp;&nbsp;", $article['keyword']);
 	if(!empty($keywords)) { 
+	    $keywords = implode("&nbsp;&nbsp;&nbsp;", $article['keyword']);
 		echo <<<HTML
 			<div class="labelwz">
 				$keywords
@@ -67,6 +71,24 @@ HTML;
 				<li><A href="/map/<?=$poi['regionId']?>">地图</A></li>
 			</ul>
 		</Div>
+<?php 
+if (!empty($correlation_words)) {
+?>
+	<div class="aside aside_text">
+		<ul>
+<?php 
+    $count = 0;
+    foreach ($correlation_words AS $name => $score) {
+        if (++$count > 20) { break; }
+        echo <<<HTML
+			<li><A href="/article/$region_id/?keyword=$name">$name</A></li>
+HTML;
+    }
+?> 
+    	</ul>
+	</div>
+    
+<?php }?>
 <?php 
 if(0) {
 ?>

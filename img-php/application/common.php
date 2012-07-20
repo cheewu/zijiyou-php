@@ -31,11 +31,11 @@ $_SGLOBAL['db'] = new MongoHandle($_SC['MongoDB']['server'], $_SC['MongoDB']['db
 // page db
 $_SGLOBAL['pagedb'] = new MongoHandle($_SC['MongoDB']['server'], 'page', $_SC['MongoDB']['options']);
 // image resize
-$_SGLOBAL['imager'] = new Image($_SC['img_dir']);
+$_SGLOBAL['imager'] = new ImageResize($_SC['article_img_dir']);
 // init flicker
 $_SGLOBAL['flicker'] = new Flicker();
 // init memecached
-init_memcached();
+$_SGLOBAL['m'] = init_memcached();
 
 //CSS文件
 //tpl_include_ex_css('reset.css');//子css文件

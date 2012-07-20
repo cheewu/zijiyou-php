@@ -105,12 +105,10 @@ class Image {
 		$this->height = intval($height);
 		$this->http_refer = trim($http_refer);
 		$this->is_cut = $is_cut;
-		$this->load();
 		if(isset($_GET['debug'])) {
-			pr($this, 0);
-			pr($_SERVER);
-			
+		    pr($this, $_SERVER);
 		}
+		$this->load();
 		!$this->is_cached && $this->resize();
 		$this->out();
 	}

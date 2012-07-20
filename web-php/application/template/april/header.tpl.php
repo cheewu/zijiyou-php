@@ -6,9 +6,6 @@
 		<link href="<?=T?>/style/css.css" rel="stylesheet" type="text/css" />
 		<script type="text/javascript">var T = '<?=T?>';</script>
 		<script type="text/javascript" src="<?=T?>/javascript/jquery-1.7.2.min.js" ></script>
-		<!--common-->
-		<script type="text/javascript" src="<?=T?>/javascript/common.js" ></script>
-		<!--common-->
 		<!--fancybox-->
 		<link rel="stylesheet" type="text/css" href="<?=T?>/fancybox/jquery.fancybox-1.3.4.css" media="screen"/>
 		<script type="text/javascript" src="<?=T?>/fancybox/jquery.fancybox-1.3.4.pack.js"></script>
@@ -22,6 +19,12 @@
 		<link href="<?=T?>/style/scroll.css" rel="stylesheet" type="text/css" />
 		<script type="text/javascript" src="<?=T?>/javascript/scroll.js"></script>
 		<!--scroll-->
+		<!--d3js-->
+		<script type="text/javascript" src="<?=T?>/javascript/d3.v2.js"></script>
+		<!--d3js-->
+		<!--common-->
+		<script type="text/javascript" src="<?=T?>/javascript/common.js" ></script>
+		<!--common-->
 	</head>
 
 	<body>

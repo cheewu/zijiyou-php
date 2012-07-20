@@ -7,7 +7,8 @@
 		<div class="travel">
 			<div class="headline"><?=$region['name']?>:<?=$name?></div>
 			<div class="jdpoi">
-				<div class="jd_img"><img src="<?=$img?>" width="250" height="190" />
+				<div class="jd_img">
+					<img src="<?=$poi_pic ? $poi_pic : ""?>" width="150" height="150" />
 <?php /*?>
 					<ul>
 						<li class="jd_click"><a href="#"><img src="images/attraction_01.jpg" width="40" height="40"></a></li>
@@ -28,7 +29,9 @@
 <!--					<h5>到达方式: 地铁1号线到天安门东（西）站下</h5>-->
 <!--					<h5>类型：主题公园</h5>-->
 				</div>
+				<?php if(!empty($wiki)) {?>
 				<div class="Introduction"><?=utf8_substr_ifneeed(strip_tags(@$wiki['content']), 200, false, '...')?><A href="/wiki/<?=$region_id?>/<?=strval($wiki['_id'])?>" target="_blank">更多</A></div>
+				<?php }?>
 			</div>
 		</div>
 		<div class="travel">
@@ -78,39 +81,43 @@ HTML;
 HTML;
 }
 */
-foreach($solr_res AS $article_index => $article) {
-	$author = @$article['author'] ?: "";
-	$title = @$article['title']['str'] ?: "";
-	$article['content'] = strip_tags($article['content']);
+foreach($documents AS $document_index => $document) {
+	$author = @$document['author'] ?: "";
+	$title = @$document['title'] ?: "";
+//	$article['content'] = strip_tags($article['content']);
 //	$article['content'] = preg_replace("#\s#", '', $article['content']);
 //	$article['content'] = preg_replace("#[\-=]{10,}#", '', $article['content']);
-	$article_id = $article['_id'];
-	$contents = utf8_substr_ifneeed($article['content'], 300, false, '...');
+	$document_id = strval($document['_id']);
+	$contents = utf8_substr_ifneeed($document['content'], 300, false, '...');
 	echo <<<HTML
 			<div class="Inform">
-				<a href="/fragement/$region_id/$article_id" target="_blank"><h1>$title</h1></a>
+				<a href="/detail/$region_id/$document_id" target="_blank"><h1>$title</h1></a>
 HTML;
-	$image_count = count($article['images']);
+	/*
+	$image_count = count($document['images']);
 	$lines = intval($image_count / 3);
 	$lines > 3 && $lines = 3;
-	if($lines > 0) {
-		foreach($article['images'] AS $index => $img) {
+	if($image_count > 0) {
+		foreach($document['images'] AS $index => $img) {
 			$current_line = intval($index / 3) + 1;
 			if($current_line > $lines) {break;}
 			$class = ($index % 3 == 0) ? "wuno" : "";
-			$img = img_proxy($img, $article['url'], 205, 110);
+			$img = img_proxy($img, $document['url'], 205, 110);
+			// onerror="$('.arti_{$document_index}_{$current_line}').css('display', 'none');"
 			echo <<<HTML
-				<h3 class="$class arti_{$article_index}_{$current_line}">
-					<img src="{$img}" line="$current_line" width="205" height="110" onerror="$('.arti_{$article_index}_{$current_line}').css('display', 'none');"/>
+				<h3 class="$class arti_{$document_index}_{$current_line}">
+					<img src="{$img}" line="$current_line" width="205" height="110"/>
 				</h3>
 HTML;
 		}
 	}
+	*/
+	tpl_echo_article_image($document['pictures']);
 	echo <<<HTML
 				<br />
 				{$contents}
 HTML;
-	$keywords = implode("&nbsp;&nbsp;&nbsp;", $article['keyword']);
+	$keywords = implode("&nbsp;&nbsp;&nbsp;", $document['keyword']);
 	if(!empty($keywords)) { 
 		echo <<<HTML
 				<div class="labelwz">
@@ -176,6 +183,41 @@ HTML;
 			</div>
 		</div>
 <?php }?>
+<?php if(!empty($poi['people_interred'])) {?>
+		<div class="offside">
+			<h1>相关历史人物</h1>
+			<div class="description">
+<?php 
+		foreach(explode(",", $poi['people_interred']) AS $key => $value){
+		    if($key > 10){break;}
+		    $wiki = get_wiki_content($value);
+		    $wiki_id = strval($wiki['_id']);
+			if($key > 10){break;}
+			echo <<<HTML
+				<p><a href="/wiki/$region_id/$wiki_id">$value</a></p>
+HTML;
+		}
+?>
+			</div>
+		</div>
+<?php }//people_interred?>
+<?php if(!empty($poi['artwork'])) {?>
+		<div class="offside">
+			<h1>相关艺术品</h1>
+			<div class="description">
+<?php 
+		foreach(explode(",", $poi['artwork']) AS $key => $value){
+		    if($key > 10){break;}
+		    $wiki = get_wiki_content($value);
+	        $wiki_id = strval($wiki['_id']);
+			echo <<<HTML
+			<p><a href="/wiki/$region_id/$wiki_id">$value</a></p>
+HTML;
+		}
+?>
+			</div>
+		</div>
+<?php }//people_interred?>
 	</div>
 	<div class="page">
 			<a href="<?=($pg > 1 && $total_res_cnt > 1) ? generate_url(array('pg' => $pg - 1)) : '#'?>">上一页</a> 

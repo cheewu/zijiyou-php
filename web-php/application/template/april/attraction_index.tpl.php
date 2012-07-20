@@ -15,7 +15,7 @@
 		$opentime = !empty($poi['opentime']) ? "开放时间:".$poi['opentime'] : "";
 		$price = !empty($poi['price']) ? "价格:".$poi['price'] : "";
 		$poi_id = (string)$poi['_id'];
-		$img = get_poi_pic($poi_id);
+		$img = tpl_get_google_poi_region_img($poi_id, 'POI', '150x150');
 		echo <<<HTML
 		<div class="travel">
 			<div class="jd_tu">
