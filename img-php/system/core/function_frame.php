@@ -498,8 +498,12 @@ function htrim($str)
  * @param bool $halt 是否在此中断
  *  
  */
-function pr($var, $halt=1)
+function pr()
 {
+    $var = func_get_args();
+    
+    $halt = func_get_arg(func_num_args() - 1) == true;
+    
 	static $is_print_css=null;
 	
 	$backtrace = debug_backtrace();
@@ -532,7 +536,7 @@ EOF;
 	
 	//变量信息
 	echo "<pre class='var'><code>";
-    var_dump($var);
+    call_user_func('var_dump', $var);
     echo '</pre></div>';
     
     //echo "</div>";
