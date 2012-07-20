@@ -25,7 +25,6 @@ function fr_init()
 	//预包含application文件
 	_fr_pre_include_application();
 	
-	
 	if(!preg_match("#nginx#i", $_SERVER['SERVER_SOFTWARE'])) {
 		if(empty($_GET['_path']) && strpos($_SERVER['PHP_SELF'], "=")){
 			$_GET['_path'] = substr($_SERVER['PHP_SELF'], strpos($_SERVER['PHP_SELF'], "=") + 1);
@@ -204,7 +203,7 @@ function _fr_controller_action(){
 			//$_SGLOBAL['_path'] 第2部分之后的为参数
 			$_SGLOBAL['controller'] = new $controller();
 			if(in_array($action, get_class_methods($controller))){
-				call_user_func_array(array($_SGLOBAL['controller'], $action), array_filter($param, 'rawurldecode'));break;
+				call_user_func_array(array($_SGLOBAL['controller'], $action), array_map('rawurldecode', $param));break;
 			}
 		}
 		set_http_response_code(404);
@@ -227,6 +226,7 @@ function _fr_pre_include_system(){
 function _fr_pre_include_application(){
 	fr_pre_include_folder(array('controller', 'library'), A_ROOT);
 	fr_pre_include_file(A_ROOT.'include'.DIRECTORY_SEPARATOR.'function_common.php');
+	fr_pre_include_file(A_ROOT.'include'.DIRECTORY_SEPARATOR.'function_tpl.php');
 	fr_pre_include_file(A_ROOT.'config'.DIRECTORY_SEPARATOR.'config_router.php');
 	fr_pre_include_file(A_ROOT.'config'.DIRECTORY_SEPARATOR.'config_preload.php');
 	fr_pre_include_file(A_ROOT.'config.php');
